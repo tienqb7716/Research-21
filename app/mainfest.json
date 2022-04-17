@@ -1,0 +1,17 @@
+{
+    "name": "TDC Research",
+    "version": "1.0",
+    "description": "Build an Extension!",
+    "manifest_version": 3,
+    "icons": {
+        "16": "icon.png",
+        "48": "icon.png",
+        "128": "icon.png"
+      },
+      "content_scripts": [
+        {
+          "matches": ["https://meet.google.com/*"],
+          "js": ["main.js"]
+        }
+      ]
+  }

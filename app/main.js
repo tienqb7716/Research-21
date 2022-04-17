@@ -8,9 +8,8 @@ color: #fff;
 background: #6F36FF;
 }
 .wrapper-rs{
-position: absolute;
-top: 50%;
-left: 50%;
+top: 60%;
+left: 20%;
 max-width: 450px;
 width: 100%;
 background: #fff;

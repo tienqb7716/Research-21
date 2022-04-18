@@ -11,7 +11,8 @@
       "content_scripts": [
         {
           "matches": ["https://meet.google.com/*"],
-          "js": ["main.js"]
+          "js": ["main.js"],
+          "web_accessible_resources": [ "iconMeet.svg","icon.png"]
         }
       ]
   }

@@ -1,104 +1,55 @@
-let html = `  <style>
-.wrapper-rs {
-  top: 50%;
-  left: 50%;
-  max-width: 450px;
-  width: 100%;
-  border-radius: 10px;
-  transform: translate(-50%, -50%);
-}
-
-.wrapper-rs header {
-  background-size: cover;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.355);
-  height: 50px;
-  width: 50px;
-  left: calc(50% - 25px);
-  top: -75px;
-  font-size: 1.5rem;line-height: 50px;color: navy;
-}
-
-.wrapper-rs header.active {
-  cursor: move;
-  user-select: none;
-}
-
-.wrapper-rs .content {
-  position: absolute;
-  left: -50%;
-  top: 60px;
-  background: #fff;
-  z-index: 5;
-  border-radius: 15px;
-  transform: translateX(39%);
-}
-
-.wrapper-rs .content.__hide {
-  display: none;
-}
-
-.wrapper-rs .content::before {
-  content: '';
-  width: 30px;
-  height: 30px;
-  background: #fff;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-15px) rotate(45deg);
-  top: 0;
-}
-.content {
-  font-size: 16px;
-}
-.content ul{
-  list-style: none;
-  padding: 0;
-}
-.content ul>li{
-  border-bottom: 1px solid rgba(51, 51, 51, 0.279);
-  display: block;
-  line-height: 30px;
-  padding-left: 15px;
-  padding-right: 15px;
-  cursor: pointer;
-  position: relative;
-  border-radius: 10px ;
-  z-index: 2;
-}
-.content ul>li:hover{
-  background: rgb(165, 200, 224);
-}
-</style>
-<div class="wrapper-rs" style="position: fixed; z-index: 9;">
+let html = ` <div class="wrapper-rs">
 <header style="text-align: center;">
-<i class="bi bi-tools"></i>
+  <i class="bi bi-tools"></i>
 </header>
-<div class="content __hide">
+<div class="content __hide pt-3">
   <ul>
     <li id="__diem-danh">
-      Điểm danh
+      <i class="bi bi-check-all"></i> Điểm danh
+    </li>
+    <li data-bs-toggle="modal" data-bs-target="#modelId">
+      <i class="bi bi-clipboard-data"></i> Khảo sát
+    </li>
+    <li > 
+      <i class="bi bi-people"></i> Chia nhóm
     </li>
     <li>
-      Khảo sát
+      <i class="bi bi-disc"></i> Ngẫu nhiên người tham gia
     </li>
     <li>
-      Chia nhóm
+      <i class="bi bi-door-open"></i> Tự động xác nhận
     </li>
     <li>
-      Ngẫu nhiên người 
-    </li>
-    <li>
-      Tự động xác nhận 
-    </li>
-    <li>
-      Lấy danh sách người không bật mic
+      <i class="bi bi-mic-mute"></i> Lấy danh sách người không bật mic
     </li>
   </ul>
 </div>
-</div>`
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Modal title</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        Add rows here
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" class="btn btn-primary">Save</button>
+    </div>
+  </div>
+</div>
+</div>
+`
+// nhung link bootstrap
 document.head.insertAdjacentHTML('afterbegin', `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">`);
+document.head.insertAdjacentHTML('afterbegin', `<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">`);
 document.body.insertAdjacentHTML('afterbegin', html);
 const wrapper = document.querySelector(".wrapper-rs"),
   header = wrapper.querySelector(".wrapper-rs>header");
@@ -124,22 +75,24 @@ document.addEventListener("mouseup", () => {
   header.removeEventListener("mousemove", onDrag);
 });
 
-
+let activeFrameMessage = false;
 let textMessage = document.querySelector('#bfTqV');
 let btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
+
 let observer = new MutationObserver(mutations => {
   if (textMessage == null) {
     textMessage = document.querySelector('#bfTqV');
     btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
-    console.log(textMessage);
   }
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
-
 const btnDiemDanh = document.querySelector('#__diem-danh');
 btnDiemDanh.addEventListener('click', function () {
-  textMessage.value = "Bắt đầu điểm danh " + (new Date()).toLocaleString();
-  btnSendMessage.disabled = false;
-  btnSendMessage.click();
+  if (textMessage != null) {
+    textMessage.value = "Bắt đầu điểm danh " + (new Date()).toLocaleString();
+    btnSendMessage.disabled = false;
+    btnSendMessage.click();
+  }
+
 })

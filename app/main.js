@@ -81,7 +81,7 @@ body{
 </header>
 <div class="content __hide">
   <ul>
-    <li>
+    <li id="__diem-danh">
       Điểm danh
     </li>
     <li>
@@ -126,3 +126,23 @@ document.addEventListener("mouseup", () => {
   header.classList.remove("active");
   header.removeEventListener("mousemove", onDrag);
 });
+
+
+let textMessage = document.querySelector('#bfTqV');
+let btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
+let observer = new MutationObserver(mutations => {
+  if (textMessage == null) {
+    textMessage = document.querySelector('#bfTqV');
+    btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
+    console.log(textMessage);
+  }
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+
+const btnDiemDanh = document.querySelector('#__diem-danh');
+btnDiemDanh.addEventListener('click', function () {
+  textMessage.value = "Bắt đầu điểm danh " + (new Date()).toLocaleString();
+  btnSendMessage.disabled = false ;
+  btnSendMessage.click();
+})

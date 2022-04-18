@@ -14,5 +14,10 @@
           "js": ["main.js"],
           "web_accessible_resources": [ "iconMeet.svg","icon.png"]
         }
-      ]
+      ],
+      "permissions": [
+        "activeTab",
+        "storage",
+        "tabs"
+       ]
   }

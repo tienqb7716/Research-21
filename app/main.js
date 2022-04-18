@@ -1,5 +1,4 @@
 let html = `  <style>
-
 .wrapper-rs {
   top: 50%;
   left: 50%;
@@ -18,6 +17,7 @@ let html = `  <style>
   width: 50px;
   left: calc(50% - 25px);
   top: -75px;
+  font-size: 1.5rem;line-height: 50px;color: navy;
 }
 
 .wrapper-rs header.active {
@@ -49,12 +49,8 @@ let html = `  <style>
   transform: translateX(-15px) rotate(45deg);
   top: 0;
 }
-
 .content {
   font-size: 16px;
-}
-body{
-  background: blue;
 }
 .content ul{
   list-style: none;
@@ -77,7 +73,7 @@ body{
 </style>
 <div class="wrapper-rs" style="position: fixed; z-index: 9;">
 <header style="text-align: center;">
-  
+<i class="bi bi-tools"></i>
 </header>
 <div class="content __hide">
   <ul>
@@ -102,6 +98,7 @@ body{
   </ul>
 </div>
 </div>`
+document.head.insertAdjacentHTML('afterbegin', `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">`);
 document.body.insertAdjacentHTML('afterbegin', html);
 const wrapper = document.querySelector(".wrapper-rs"),
   header = wrapper.querySelector(".wrapper-rs>header");
@@ -143,6 +140,6 @@ observer.observe(document.body, { childList: true, subtree: true });
 const btnDiemDanh = document.querySelector('#__diem-danh');
 btnDiemDanh.addEventListener('click', function () {
   textMessage.value = "Bắt đầu điểm danh " + (new Date()).toLocaleString();
-  btnSendMessage.disabled = false ;
+  btnSendMessage.disabled = false;
   btnSendMessage.click();
 })

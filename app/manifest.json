@@ -8,10 +8,20 @@
         "48": "icon.png",
         "128": "icon.png"
       },
+      "background": {
+        "service_worker": "background.js"
+      },
       "content_scripts": [
         {
           "matches": ["https://meet.google.com/*"],
-          "js": ["main.js"]
+          "js": ["main.js","bootstrap.js"],
+          "web_accessible_resources": [ "iconMeet.svg","icon.png"],
+          "css" : ["tdc-style.css"]
         }
-      ]
+      ],
+      "permissions": [
+        "activeTab",
+        "storage",
+        "tabs"
+       ]
   }

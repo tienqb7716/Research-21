@@ -238,6 +238,18 @@ btnAttendanceKeyword.addEventListener('click', function () {
   }
 })
 
+let btnGetMuteList = document.querySelector('.get-mute-list');
+btnGetMuteList.addEventListener('click', function(){
+  // lưu danh sách người
+  chrome.storage.sync.set({ muteList: JSON.stringify(muteList) });
+
+  // gửi yêu cầu
+  sendMessageBGJS('printMuteList');
+
+  // thông báo
+  dataAttendance = [];
+
+});
 btnStopAttendanceKeyword.addEventListener('click', function () {
 
   // lưu danh sách người
@@ -265,3 +277,5 @@ async function sendMessageBGJS(type) {
   });
 }
 }
+
+

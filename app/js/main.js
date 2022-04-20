@@ -127,5 +127,4 @@ toggleAutoAdmit.addEventListener('click',function () {
     },200)
   }
  
-})
-
+});

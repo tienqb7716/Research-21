@@ -1,27 +1,38 @@
 {
-    "name": "TDC Research",
-    "version": "1.0",
-    "description": "Đây là công cụ hỗ trợ trong việc dạy trực tuyến bằng google meet",
-    "manifest_version": 3,
-    "icons": {
-        "16": "icon.png",
-        "48": "icon.png",
-        "128": "icon.png"
-      },
-      "background": {
-        "service_worker": "background.js"
-      },
-      "content_scripts": [
-        {
-          "matches": ["https://meet.google.com/*"],
-          "js": ["main.js","bootstrap.js"],
-          "web_accessible_resources": [ "iconMeet.svg","icon.png"],
-          "css" : ["tdc-style.css","bootstrap.css"]
-        }
+  "name": "TDC Research",
+  "version": "1.0",
+  "description": "Đây là công cụ hỗ trợ trong việc giảng dạy trực tuyến bằng google meet",
+  "manifest_version": 3,
+  "icons": {
+    "16": "images/icon.png",
+    "48": "images/icon.png",
+    "128": "images/icon.png"
+  },
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://meet.google.com/*",
+        "http://online.tdc.edu.vn/*"
       ],
-      "permissions": [
-        "activeTab",
-        "storage",
-        "tabs"
-       ]
-  }
+      "js": [
+        "js/main.js",
+        "js/bootstrap.js"
+      ],
+      "web_accessible_resources": [
+        "images/icon.png"
+      ],
+      "css": [
+        "css/tdc-style.css",
+        "css/bootstrap.css"
+      ]
+    }
+  ],
+  "permissions": [
+    "scripting",
+    "storage",
+    "tabs"
+  ]
+}

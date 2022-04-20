@@ -8,4 +8,5 @@ chrome.runtime.onMessage.addListener(
                 }
         }
         sendResponse(true);
-    });
+    }
+);

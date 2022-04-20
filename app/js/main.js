@@ -1,3 +1,5 @@
+if (window.location.hostname === 'meet.google.com') {
+  
 let html = `
 <div class="wrapper-rs">
   <header style="text-align: center;">
@@ -5,12 +7,12 @@ let html = `
   </header>
   <div class="content __hide pt-3">
     <ul>
-      <li class='fw-bold' id="__diem-danh" data-bs-toggle="collapse" data-bs-target="#collapseExample">
+      <li class='fw-bold' id="__diem-danh" data-bs-toggle="collapse" data-bs-target="#__diem-danh-collapse">
         <i class="bi bi-check-all"></i> Điểm danh
       </li>
-      <div class="collapse" id="collapseExample">
+      <div class="collapse ps-4" id="__diem-danh-collapse">
         <div class="dropdown dropend">
-              <p class="dropdown-item dropdown-toggle px-2" href="#" role="button" id="dropdownMenuLink"
+              <p class="dropdown-item dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
                 data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
                 Điểm danh theo keyword
               </p>
@@ -32,6 +34,24 @@ let html = `
             </div>
           </div>
         </div>
+        <div class="dropdown dropend">
+        <p class="dropdown-item dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
+          data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
+          Điểm danh trang online.tdc.edu.vn
+        </p>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <h6 class="dropdown-header">Điểm danh trang online.tdc.edu.vn</h6>
+      <div class="input-group mb-3 px-2">
+        <input type="text" class="form-control input-attendance-keyword" placeholder="Nhập link danh sách"
+          aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-outline-primary btn-sm btn-attendance-keyword" type="button">Điểm danh</button>
+      </div>
+      <div class="input-group mb-3 p-2">
+        <button type="button" class="btn btn-danger btn-sm btn-stop-attendance-keyword d-none">Kết thúc điểm
+          danh</button>
+      </div>
+    </div>
+  </div>
       </div>
       <li class='fw-bold'  data-bs-toggle="modal" data-bs-target="#modelId">
         <i class="bi bi-clipboard-data"></i> Khảo sát
@@ -243,4 +263,5 @@ async function sendMessageBGJS(type) {
   let result = await chrome.runtime.sendMessage({
     type: type
   });
+}
 }

@@ -16,7 +16,7 @@
     <body class="mt-5"> 
         <div class="container">
             <h1>Danh sách những người đã điểm danh </h1>
-            <table class="table">
+            <table class="table" id="table" >
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -25,11 +25,12 @@
                     </tr>
                 </thead>
                 <tbody>
-        
                 </tbody>
             </table>
+            <button class="btn btn-success d-none export-to-excel">Export table to excel</button>
         </div>
         <script src="./js/bootstrap.js"></script>
+        <script type="text/javascript" src="./js/xlsx.full.min.js"></script>
         <script src="./js/printTablePerson.js"></script>
     </body>
 

@@ -104,7 +104,14 @@ let btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.
 let listChat = document.querySelector('.z38b6');
 
 // kiểm tra thay đổi và lấy các đối tượng
-let observer = new MutationObserver(mutations => {
+const observer = new MutationObserver(mutations => {
+  if (!activeFrameMessage) {
+    let showListChat = document.querySelector('[data-tooltip-id=tt-c14]');
+    if (showListChat != null) {
+      showListChat.click();
+      activeFrameMessage = true;
+    }
+  }
   if (textMessage == null) {
     textMessage = document.querySelector('#bfTqV');
     btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
@@ -113,15 +120,6 @@ let observer = new MutationObserver(mutations => {
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
-
-// const btnDiemDanh = document.querySelector('#__diem-danh');
-// btnDiemDanh.addEventListener('click', function () {
-//   if (textMessage != null) {
-//     textMessage.value = "Bắt đầu điểm danh " + (new Date()).toLocaleString();
-//     btnSendMessage.disabled = false;
-//     btnSendMessage.click();
-//   }
-// })
 
 function admitUserIfWaiting() {
   const spanElements = document.getElementsByTagName('span');
@@ -187,7 +185,7 @@ let observerChatlist = new MutationObserver(mutations => {
               name: nguoiThamGia.getAttribute('data-sender-name'),
               id: id
             }
-            if (!dataAttendance.includes(person)) {
+            if (!dataAttendance.some(e => e.id === id)) {
               dataAttendance.push(
                 person
               );
@@ -207,7 +205,6 @@ const inputKeyword = document.querySelector('.input-attendance-keyword');
 const ignoreUppercaseAndLowercase = document.querySelector('#ignoreUppercaseAndLowercase');
 
 btnAttendanceKeyword.addEventListener('click', function () {
-  dataAttendance = [];
   if (inputKeyword.value != '') {
     btnAttendanceKeyword.disabled = true;
     inputKeyword.disabled = true;
@@ -222,13 +219,28 @@ btnAttendanceKeyword.addEventListener('click', function () {
 })
 
 btnStopAttendanceKeyword.addEventListener('click', function () {
+
+  // lưu danh sách người
+  chrome.storage.sync.set({ tablePerson: JSON.stringify(dataAttendance) });
+
+  // gửi yêu cầu
+  sendMessageBGJS('printTablePerson');
+
   btnAttendanceKeyword.disabled = false;
   inputKeyword.disabled = false;
   ignoreUppercaseAndLowercase.disabled = false;
   observerChatlist.disconnect();
-  console.log(dataAttendance);
   this.classList.add('d-none');
+
+  // thông báo
   textMessage.value = `Kết thúc điểm danh theo từ khoá "${keyAttendance}" vào lúc ${(new Date()).toLocaleString()} `;
   btnSendMessage.disabled = false;
   btnSendMessage.click();
+  dataAttendance = [];
 })
+
+async function sendMessageBGJS(type) {
+  let result = await chrome.runtime.sendMessage({
+    type: type
+  });
+}

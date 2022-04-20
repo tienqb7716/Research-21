@@ -22,7 +22,8 @@
         "js/bootstrap.js"
       ],
       "web_accessible_resources": [
-        "images/icon.png"
+        "images/icon.png",
+        "vongquay.html"
       ],
       "css": [
         "css/tdc-style.css",

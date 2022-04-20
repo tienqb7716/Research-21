@@ -7,4 +7,4 @@ let color = '#3aa757';
 //   console.log('Default background color set to %cgreen', `color: ${color}`);
 
 // });
-// chrome.tabs.create({ url: chrome.runtime.getURL('vongquay.html') });
+chrome.tabs.create({ url: chrome.runtime.getURL('vongquay.html') });

@@ -22,7 +22,7 @@ let html = ` <div class="wrapper-rs">
      </span>
     </li>
     <li>
-      <i class="bi bi-mic-mute"></i> Lấy danh sách người không bật mic
+      <i class="bi bi-mic-mute btn-get-mute-list"></i> Lấy danh sách người không bật mic
     </li>
   </ul>
 </div>
@@ -128,3 +128,4 @@ toggleAutoAdmit.addEventListener('click',function () {
   }
  
 });
+let btnGetMuteList = document.querySelector('.btn-get-mute-list');

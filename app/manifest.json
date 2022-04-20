@@ -19,8 +19,7 @@
       ],
       "js": [
         "js/main.js",
-        "js/bootstrap.js",
-        "js/tuan.js"
+        "js/bootstrap.js"
       ],
       "web_accessible_resources": [
         "images/icon.png"

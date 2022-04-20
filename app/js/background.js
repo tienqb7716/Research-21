@@ -1,10 +1,12 @@
 
-
-let color = '#3aa757';
-
-// chrome.runtime.onInstalled.addListener(() => {
-//   chrome.storage.sync.set({ color });
-//   console.log('Default background color set to %cgreen', `color: ${color}`);
-
-// });
-// chrome.tabs.create({ url: chrome.runtime.getURL('vongquay.html') });
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        switch (request.type) {
+            case 'printTablePerson':
+                {
+                    chrome.tabs.create({ url: chrome.runtime.getURL('TablePerson.html') }); break;
+                }
+        }
+        sendResponse(true);
+    }
+);

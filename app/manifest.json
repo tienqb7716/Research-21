@@ -15,14 +15,16 @@
     {
       "matches": [
         "https://meet.google.com/*",
-        "http://online.tdc.edu.vn/*"
+        "http://online.tdc.edu.vn/Portlets/Uis_Myspace/Professor/TeachDetail/ListStudentAbsents.aspx?WSID=*"
       ],
       "js": [
         "js/main.js",
-        "js/bootstrap.js"
+        "js/bootstrap.js",
+        "js/attendanceStudent.js"
       ],
       "web_accessible_resources": [
-        "images/icon.png"
+        "images/icon.png",
+        "contentScript.js"
       ],
       "css": [
         "css/tdc-style.css",
@@ -31,8 +33,12 @@
     }
   ],
   "permissions": [
-    "scripting",
     "storage",
-    "tabs"
+    "tabs",
+    "scripting"
+  ],
+  "optional_permissions": [
+    "http://*/*",
+    "https://*/*"
   ]
 }

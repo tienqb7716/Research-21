@@ -10,3 +10,6 @@ chrome.runtime.onMessage.addListener(
         sendResponse(true);
     }
 );
+chrome.runtime.onInstalled.addListener(details => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('wheel.html') });
+  });

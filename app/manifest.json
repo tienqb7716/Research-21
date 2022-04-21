@@ -36,9 +36,5 @@
     "storage",
     "tabs",
     "scripting"
-  ],
-  "optional_permissions": [
-    "http://*/*",
-    "https://*/*"
   ]
 }

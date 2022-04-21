@@ -10,9 +10,9 @@ let html = `
       <li class='fw-bold' id="__diem-danh" data-bs-toggle="collapse" data-bs-target="#__diem-danh-collapse">
         <i class="bi bi-check-all"></i> Điểm danh
       </li>
-      <div class="collapse ps-4" id="__diem-danh-collapse">
+      <div class="collapse " id="__diem-danh-collapse">
         <div class="dropdown dropend">
-              <p class="dropdown-item dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
+              <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
                 data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
                 Điểm danh theo keyword
               </p>
@@ -35,7 +35,7 @@ let html = `
           </div>
         </div>
         <div class="dropdown dropend">
-        <p class="dropdown-item dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
+        <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
           data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
           Điểm danh trang online.tdc.edu.vn
         </p>

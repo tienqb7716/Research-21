@@ -1,6 +1,6 @@
 if (window.location.hostname === 'meet.google.com') {
-  
-let html = `
+
+  let html = `
 <div class="wrapper-rs">
   <header style="text-align: center;">
     <i class="bi bi-tools"></i>
@@ -68,7 +68,7 @@ let html = `
         </span>
       </li>
       <li class='fw-bold'  >
-        <i class="bi bi-mic-mute btn-get-mute-list"></i> Lấy danh sách người không bật mic
+        <div class="btn-get-mute-list"><i class="bi bi-mic-mute"></i> Lấy danh sách người không bật mic</div>
       </li>
     </ul>
   </div>
@@ -91,191 +91,176 @@ let html = `
   </div>
 </div>
 `
-// nhung link bootstrap
-document.head.insertAdjacentHTML('afterbegin', `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">`);
-document.body.insertAdjacentHTML('afterbegin', html);
-const wrapper = document.querySelector(".wrapper-rs"),
-  header = wrapper.querySelector(".wrapper-rs>header");
-const card = document.querySelector('.wrapper-rs .content');
-header.addEventListener('click', function () {
-  card.classList.toggle('__hide');
-})
-function onDrag({ movementX, movementY }) {
-  let getStyle = window.getComputedStyle(wrapper);
-  let leftVal = parseInt(getStyle.left);
-  let topVal = parseInt(getStyle.top);
-  wrapper.style.left = `${leftVal + movementX}px`;
-  wrapper.style.top = `${topVal + movementY}px`;
-}
-
-header.addEventListener("mousedown", () => {
-  header.classList.add("active");
-  header.addEventListener("mousemove", onDrag);
-});
-
-document.addEventListener("mouseup", () => {
-  header.classList.remove("active");
-  header.removeEventListener("mousemove", onDrag);
-});
-
-let activeFrameMessage = false;
-let textMessage = document.querySelector('#bfTqV');
-let btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
-let listChat = document.querySelector('.z38b6');
-
-// kiểm tra thay đổi và lấy các đối tượng
-const observer = new MutationObserver(mutations => {
-  if (!activeFrameMessage) {
-    let showListChat = document.querySelector('[data-tooltip-id=tt-c14]');
-    if (showListChat != null) {
-      showListChat.click();
-      activeFrameMessage = true;
-    }
+  // nhung link bootstrap
+  document.head.insertAdjacentHTML('afterbegin', `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">`);
+  document.body.insertAdjacentHTML('afterbegin', html);
+  const wrapper = document.querySelector(".wrapper-rs"),
+    header = wrapper.querySelector(".wrapper-rs>header");
+  const card = document.querySelector('.wrapper-rs .content');
+  header.addEventListener('click', function () {
+    card.classList.toggle('__hide');
+  })
+  function onDrag({ movementX, movementY }) {
+    let getStyle = window.getComputedStyle(wrapper);
+    let leftVal = parseInt(getStyle.left);
+    let topVal = parseInt(getStyle.top);
+    wrapper.style.left = `${leftVal + movementX}px`;
+    wrapper.style.top = `${topVal + movementY}px`;
   }
-  if (textMessage == null) {
-    textMessage = document.querySelector('#bfTqV');
-    btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
-    listChat = document.querySelector('.z38b6');
-  }
-});
 
-observer.observe(document.body, { childList: true, subtree: true });
+  header.addEventListener("mousedown", () => {
+    header.classList.add("active");
+    header.addEventListener("mousemove", onDrag);
+  });
 
-function admitUserIfWaiting() {
-  const spanElements = document.getElementsByTagName('span');
-  for (let i = 0; i < spanElements.length; i++) {
-    const span = spanElements[i];
-    // show list 
-    if (span.textContent == 'View all' || span.textContent == 'Xem tất cả') {
-      console.log('ada beberapa peserta masuk');
-      span.click();
-    }
+  document.addEventListener("mouseup", () => {
+    header.classList.remove("active");
+    header.removeEventListener("mousemove", onDrag);
+  });
 
-    // chấp nhận từng người
-    if (span.textContent == 'Admit' || span.textContent == 'Chấp nhận') {
-      console.log(`Admitting participant automatically.`);
-      span.click();
-    }
+  let activeFrameMessage = false;
+  let textMessage = document.querySelector('#bfTqV');
+  let btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
+  let listChat = document.querySelector('.z38b6');
 
-  }
-}
-
-const toggleAutoAdmit = document.querySelector('.__toggle-auto-admit');
-
-toggleAutoAdmit.addEventListener('click', function () {
-  if (this.checked === true) {
-    let autoAdmit = setTimeout(function admit() {
-      admitUserIfWaiting();
-      if (toggleAutoAdmit.checked === true) {
-        autoAdmit = setTimeout(admit, 200);
+  // kiểm tra thay đổi và lấy các đối tượng
+  const observer = new MutationObserver(mutations => {
+    if (!activeFrameMessage) {
+      let showListChat = document.querySelector('[data-tooltip-id=tt-c14]');
+      if (showListChat != null) {
+        showListChat.click();
+        activeFrameMessage = true;
       }
-    }, 200)
+    }
+    if (textMessage == null) {
+      textMessage = document.querySelector('#bfTqV');
+      btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
+      listChat = document.querySelector('.z38b6');
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  function admitUserIfWaiting() {
+    const spanElements = document.getElementsByTagName('span');
+    for (let i = 0; i < spanElements.length; i++) {
+      const span = spanElements[i];
+      // show list 
+      if (span.textContent == 'View all' || span.textContent == 'Xem tất cả') {
+        console.log('ada beberapa peserta masuk');
+        span.click();
+      }
+
+      // chấp nhận từng người
+      if (span.textContent == 'Admit' || span.textContent == 'Chấp nhận') {
+        console.log(`Admitting participant automatically.`);
+        span.click();
+      }
+
+    }
   }
 
-});
+  const toggleAutoAdmit = document.querySelector('.__toggle-auto-admit');
 
-
-let observerChatlist = new MutationObserver(mutations => {
-  mutations.forEach(function (mutation) {
-    mutation.addedNodes.forEach(element => {
-      if (element.getAttribute('data-sender-id') != "_self_") {
-        let nguoiThamGia = element;
-        if (element.classList.contains('oIy2qc')) {
-          nguoiThamGia = element.parentElement.parentElement;
+  toggleAutoAdmit.addEventListener('click', function () {
+    if (this.checked === true) {
+      let autoAdmit = setTimeout(function admit() {
+        admitUserIfWaiting();
+        if (toggleAutoAdmit.checked === true) {
+          autoAdmit = setTimeout(admit, 200);
         }
+      }, 200)
+    }
 
-        nguoiThamGia.querySelectorAll('.oIy2qc[data-message-text]').forEach(e => {
-          if (ignoreUppercaseAndLowercase.checked) {
-            if (e.getAttribute('data-message-text').toLowerCase().trim() == keyAttendance.toLowerCase().trim()) {
+  });
+
+
+  let observerChatlist = new MutationObserver(mutations => {
+    mutations.forEach(function (mutation) {
+      mutation.addedNodes.forEach(element => {
+        if (element.getAttribute('data-sender-id') != "_self_") {
+          let nguoiThamGia = element;
+          if (element.classList.contains('oIy2qc')) {
+            nguoiThamGia = element.parentElement.parentElement;
+          }
+
+          nguoiThamGia.querySelectorAll('.oIy2qc[data-message-text]').forEach(e => {
+            if (ignoreUppercaseAndLowercase.checked) {
+              if (e.getAttribute('data-message-text').toLowerCase().trim() == keyAttendance.toLowerCase().trim()) {
+                const id = nguoiThamGia.getAttribute('data-sender-id').substring(nguoiThamGia.getAttribute('data-sender-id').lastIndexOf('/') + 1)
+                const person = {
+                  name: nguoiThamGia.getAttribute('data-sender-name'),
+                  id: id
+                }
+                if (!dataAttendance.includes(person)) {
+                  dataAttendance.push(
+                    person
+                  );
+                }
+              }
+            }
+            if (e.getAttribute('data-message-text') == keyAttendance) {
               const id = nguoiThamGia.getAttribute('data-sender-id').substring(nguoiThamGia.getAttribute('data-sender-id').lastIndexOf('/') + 1)
               const person = {
                 name: nguoiThamGia.getAttribute('data-sender-name'),
                 id: id
               }
-              if (!dataAttendance.includes(person)) {
+              if (!dataAttendance.some(e => e.id === id)) {
                 dataAttendance.push(
                   person
                 );
               }
             }
-          }
-          if (e.getAttribute('data-message-text') == keyAttendance) {
-            const id = nguoiThamGia.getAttribute('data-sender-id').substring(nguoiThamGia.getAttribute('data-sender-id').lastIndexOf('/') + 1)
-            const person = {
-              name: nguoiThamGia.getAttribute('data-sender-name'),
-              id: id
-            }
-            if (!dataAttendance.some(e => e.id === id)) {
-              dataAttendance.push(
-                person
-              );
-            }
-          }
-        });
-      }
-    });
+          });
+        }
+      });
+    })
+  });
+
+  let keyAttendance = '';
+  let dataAttendance = [];
+  const btnAttendanceKeyword = document.querySelector('.btn-attendance-keyword');
+  const btnStopAttendanceKeyword = document.querySelector('.btn-stop-attendance-keyword');
+  const inputKeyword = document.querySelector('.input-attendance-keyword');
+  const ignoreUppercaseAndLowercase = document.querySelector('#ignoreUppercaseAndLowercase');
+
+  btnAttendanceKeyword.addEventListener('click', function () {
+    if (inputKeyword.value != '') {
+      btnAttendanceKeyword.disabled = true;
+      inputKeyword.disabled = true;
+      ignoreUppercaseAndLowercase.disabled = true;
+      keyAttendance = inputKeyword.value;
+      btnStopAttendanceKeyword.classList.remove('d-none');
+      textMessage.value = `Bắt đầu điểm danh theo từ khoá "${keyAttendance}" vào lúc ${(new Date()).toLocaleString()} `;
+      btnSendMessage.disabled = false;
+      btnSendMessage.click();
+      observerChatlist.observe(listChat, { childList: true, subtree: true, characterData: true });
+    }
   })
-});
 
-let keyAttendance = '';
-let dataAttendance = [];
-const btnAttendanceKeyword = document.querySelector('.btn-attendance-keyword');
-const btnStopAttendanceKeyword = document.querySelector('.btn-stop-attendance-keyword');
-const inputKeyword = document.querySelector('.input-attendance-keyword');
-const ignoreUppercaseAndLowercase = document.querySelector('#ignoreUppercaseAndLowercase');
 
-btnAttendanceKeyword.addEventListener('click', function () {
-  if (inputKeyword.value != '') {
-    btnAttendanceKeyword.disabled = true;
-    inputKeyword.disabled = true;
-    ignoreUppercaseAndLowercase.disabled = true;
-    keyAttendance = inputKeyword.value;
-    btnStopAttendanceKeyword.classList.remove('d-none');
-    textMessage.value = `Bắt đầu điểm danh theo từ khoá "${keyAttendance}" vào lúc ${(new Date()).toLocaleString()} `;
+  btnStopAttendanceKeyword.addEventListener('click', function () {
+
+    // lưu danh sách người
+    chrome.storage.sync.set({ tablePerson: JSON.stringify(dataAttendance) });
+
+    // gửi yêu cầu
+    sendMessageBGJS('printTablePerson');
+
+    btnAttendanceKeyword.disabled = false;
+    inputKeyword.disabled = false;
+    ignoreUppercaseAndLowercase.disabled = false;
+    observerChatlist.disconnect();
+    this.classList.add('d-none');
+
+    // thông báo
+    textMessage.value = `Kết thúc điểm danh theo từ khoá "${keyAttendance}" vào lúc ${(new Date()).toLocaleString()} `;
     btnSendMessage.disabled = false;
     btnSendMessage.click();
-    observerChatlist.observe(listChat, { childList: true, subtree: true, characterData: true });
-  }
-})
+    dataAttendance = [];
+  })
 
-let btnGetMuteList = document.querySelector('.get-mute-list');
-btnGetMuteList.addEventListener('click', function(){
-  // lưu danh sách người
-  chrome.storage.sync.set({ muteList: JSON.stringify(muteList) });
-
-  // gửi yêu cầu
-  sendMessageBGJS('printMuteList');
-
-  // thông báo
-  dataAttendance = [];
-
-});
-btnStopAttendanceKeyword.addEventListener('click', function () {
-
-  // lưu danh sách người
-  chrome.storage.sync.set({ tablePerson: JSON.stringify(dataAttendance) });
-
-  // gửi yêu cầu
-  sendMessageBGJS('printTablePerson');
-
-  btnAttendanceKeyword.disabled = false;
-  inputKeyword.disabled = false;
-  ignoreUppercaseAndLowercase.disabled = false;
-  observerChatlist.disconnect();
-  this.classList.add('d-none');
-
-  // thông báo
-  textMessage.value = `Kết thúc điểm danh theo từ khoá "${keyAttendance}" vào lúc ${(new Date()).toLocaleString()} `;
-  btnSendMessage.disabled = false;
-  btnSendMessage.click();
-  dataAttendance = [];
-})
-
-async function sendMessageBGJS(type) {
-  let result = await chrome.runtime.sendMessage({
-    type: type
-  });
-}
+    
 }
 
 

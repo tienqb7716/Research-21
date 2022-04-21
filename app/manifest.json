@@ -20,7 +20,8 @@
       "js": [
         "js/main.js",
         "js/bootstrap.js",
-        "js/attendanceStudent.js"
+        "js/attendanceStudent.js",
+        "js/muteList.js"
       ],
       "web_accessible_resources": [
         "images/icon.png",

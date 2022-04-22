@@ -24,12 +24,13 @@
         "js/muteList.js"
       ],
       "web_accessible_resources": [
-        "images/icon.png",
+        "images/*",
         "contentScript.js"
       ],
       "css": [
         "css/tdc-style.css",
-        "css/bootstrap.css"
+        "css/bootstrap.css",
+        "css/wheel-style.css"
       ]
     }
   ],
@@ -37,9 +38,5 @@
     "storage",
     "tabs",
     "scripting"
-  ],
-  "optional_permissions": [
-    "http://*/*",
-    "https://*/*"
   ]
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách sinh viên vắng mặt</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+</head>
+
+<body>
+    <div class="py-5">
+        <div class="container px-5">
+            <h1 class="text-center text-primary mb-3">
+                Danh sách sinh viên vắng mặt
+            </h1>
+            <table class="table table-bordered table-striped caption-top ">
+                <caption></caption>
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" style="width: 80px">STT</th>
+                        <th scope="col" style="width: 200px">Mã số sinh viên</th>
+                        <th scope="col">Lớp</th>
+                        <th scope="col">Họ lót</th>
+                        <th scope="col">Tên</th>
+                        <th scope="col" style="width: 80px">Số tiết</th>
+                        <th scope="col" style="width: 80px">Vắng Có phép</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="text-end">
+                <button type="button" class="btn btn-danger mx-3 all-no-checked ">
+                    Tất cả không phép
+                </button>
+                <button type="button"  class="btn btn-info mx-3 all-checked">
+                    Tất cả có phép
+                </button>
+                <button type="button"  class="btn btn-success ms-3" data-bs-toggle="modal" data-bs-target="#modelId"> 
+                    Lưu vắng mặt
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                            <h5 class="modal-title">Thông báo</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                       Bạn thực sự muốn lưu danh sách vắng sinh viên ?
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary btn-save" data-bs-dismiss="modal">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+       <script src="./js/bootstrap.js"></script>
+    <script src="./js/absentStudent.js"></script>
+
+</body>
+
+</html>

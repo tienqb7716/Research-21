@@ -100,12 +100,54 @@ function run() {
                       id="toggleAutoAdmit">
               </span>
           </li>
-          <li class='fw-bold'>
+          <li class='fw-bold' id="liveToastBtn">
               <i class="bi bi-mic-mute"></i> Lấy danh sách người không bật mic
           </li>
       </ul>
   </div>
 </div>
+<div class="position-fixed bottom-50 start-0" style="left:50px;z-index:98;">
+        <div id="myToast" class="toast hide overflow-auto w-100 h-100 d-none" style="width: 300px; max-height: 350px;"
+            role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header text-primary bg-white position-absolute mw-100 " style="width: 99%;">
+                <strong class="me-auto">Những người không bật mic</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body mt-4 ">
+                <table class="table table-bordered mt-2">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td colspan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>
 <!-- Modal -->
 <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -128,6 +170,7 @@ function run() {
     "afterbegin",
     `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">`
   );
+
   document.body.insertAdjacentHTML("afterbegin", html);
 
   const wrapper = document.querySelector(".wrapper-rs"),
@@ -155,6 +198,24 @@ function run() {
     header.classList.remove("active");
     header.removeEventListener("mousemove", onDrag);
   });
+
+  let btn = main.querySelector("#liveToastBtn");
+  let toastHtml = document.querySelector("#myToast");
+
+  /* Create toast instance */
+  let toast = new bootstrap.Toast(toastHtml, {
+    autohide: false
+  });
+
+  btn.addEventListener("click", function () {
+    console.log('ok');
+    toastHtml.classList.remove("d-none")
+    toast.show();
+  });
+
+  toastHtml.addEventListener('hidden.bs.toast', function () {
+    toastHtml.classList.add("d-none")
+  })
 
   function admitUserIfWaiting() {
     const spanElements = document.getElementsByTagName("span");

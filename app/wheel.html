@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <title>Vòng quay may mắn</title>
     <link rel="stylesheet" href="./css/wheel-style.css">
 </head>
+
 <body>
     <div class="box-name">
         <textarea name="list-name" id="list-name" cols="30" rows="10"></textarea>
@@ -24,5 +26,120 @@
         <h1 class="msg"></h1>
     </main>
     <script src="./js/wheel.js"></script>
+
+
+    <div class="wrapper-rs">
+        <header style="text-align: center;">
+            <i class="bi bi-tools"></i>
+        </header>
+        <div class="content __hide pt-3">
+            <ul>
+                <li class='fw-bold' id="__diem-danh" data-bs-toggle="collapse" data-bs-target="#__diem-danh-collapse">
+                    <i class="bi bi-check-all"></i> Điểm danh
+                </li>
+                <div class="collapse " id="__diem-danh-collapse">
+                    <div class="dropdown dropend">
+                        <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button"
+                            id="dropdownMenuLink" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                            aria-expanded="false">
+                            Điểm danh theo từ khoá
+                        </p>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <h6 class="dropdown-header">Điểm danh theo từ khoá</h6>
+                            <div class="input-group mb-3 px-2">
+                                <input type="text" class="form-control input-attendance-keyword"
+                                    placeholder="Nhập keyword" aria-label="Recipient's username"
+                                    aria-describedby="button-addon2">
+                                <button class="btn btn-outline-primary btn-sm"
+                                    ${tagBtn}='${actions.attendanceByKeyword}' type="button">Điểm danh</button>
+                            </div>
+                            <div class="input-group mb-3 px-2">
+                                <input class="form-check-input" type="checkbox" value=""
+                                    id="ignoreUppercaseAndLowercase">
+                                <label class="form-check-label ps-2" for="ignoreUppercaseAndLowercase">
+                                    Bỏ qua chữ hoa và chữ thường
+                                </label>
+                            </div>
+                            <div class="input-group mb-3 p-2">
+                                <button type="button" class="btn btn-danger d-none"
+                                    ${tagBtn}='${actions.stopAttendanceKeyword}'>Kết thúc điểm
+                                    danh</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dropdown dropend">
+                        <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button"
+                            id="dropdownMenuLink" data-bs-toggle="dropdown" data-bs-auto-close="false"
+                            aria-expanded="false">
+                            Điểm danh trang online.tdc.edu.vn
+                        </p>
+                        <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuLink">
+                            <h6 class="dropdown-header">Điểm danh trang online.tdc.edu.vn</h6>
+                            <div class="input-group my-2">
+                                <input type="text" class="form-control input-link-online"
+                                    placeholder="Nhập link danh sách">
+                                <button class="btn btn-outline-primary btn-sm " ${tagBtn}='${actions.getListStudent}'
+                                    type="button">Lấy danh sách</button>
+                                <button class="btn btn-outline-danger d-none btn-sm "
+                                    ${tagBtn}='${actions.reEnterLinkListStudent}' type="button">Nhập lại link</button>
+                                <div class="valid-feedback">
+                                    Lấy danh sách sinh viên thành công
+                                </div>
+                                <div class="invalid-feedback">
+                                    Link danh sách sinh viên không hợp lệ
+                                </div>
+                            </div>
+                            <div class=" mb-3 p-2 control-attendance-tdc d-none">
+                                <div class="mb-3">
+                                    <label for="input-tiet-vang" class="form-label">Số tiết vắng</label>
+                                    <input type="number" class="form-control" min="1" max="9" id="input-tiet-vang"
+                                        value="5">
+                                </div>
+                                <button type="button" class="btn rounded-pill btn-success mx-auto d-block"
+                                    ${tagBtn}='${actions.startAttendanceTDC}'>Bắt đầu</button>
+                                <button type="button" class="btn rounded-pill btn-danger mx-auto d-block d-none"
+                                    ${tagBtn}='${actions.stopAttendanceTDC}'>Kết thúc</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <li class='fw-bold' data-bs-toggle="modal" data-bs-target="#modelId">
+                    <i class="bi bi-clipboard-data"></i> Khảo sát
+                </li>
+                <li class='fw-bold'>
+                    <i class="bi bi-people"></i> Chia nhóm
+                </li>
+                <li class='fw-bold'>
+                    <i class="bi bi-disc"></i> Ngẫu nhiên người tham gia
+                </li class='fw-bold'>
+                <li class='fw-bold'>
+                    <i class="bi bi-door-open"></i> Tự động xác nhận <span class="form-check float-end form-switch">
+                        <input class="form-check-input __toggle-auto-admit" type="checkbox" role="switch"
+                            id="toggleAutoAdmit">
+                    </span>
+                </li>
+                <li class='fw-bold'>
+                    <i class="bi bi-mic-mute"></i> Lấy danh sách người không bật mic
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        Add rows here
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

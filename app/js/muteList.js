@@ -2,6 +2,7 @@ let btnMute = document.querySelector('.btn-get-mute-list');
 let btnGrouping = document.querySelector('.btn-grouping');
 let txtGrouping = document.querySelector('.txt-grouping');
 let btnImportGroup = document.querySelector('.btn-import-group');
+let btnSaveGroupingList = document.querySelector('.btn-save-grouping-list');
 let txtChat;
 let btnChat;
 
@@ -28,6 +29,16 @@ btnImportGroup.addEventListener('click', function () {
 
 });
 
+// Save grouping list
+btnSaveGroupingList.addEventListener('click', function(){
+    const escapeHTMLPolicy = trustedTypes.createPolicy("myEscapePolicy", {
+        createHTML: (string) => string
+      });
+      
+      el = document.querySelector('.koV58.Zi94Db').parentNode;
+      const escaped = escapeHTMLPolicy.createHTML(`<span class="badge bg-secondary text-white">New</span>`);
+      console.log(el.insertAdjacentHTML("afterbegin", escaped));
+});
 
 btnMute.addEventListener('click', function () {
 

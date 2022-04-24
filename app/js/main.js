@@ -70,6 +70,11 @@ if (window.location.hostname === 'meet.google.com') {
       <li class='fw-bold'  >
         <div class="btn-get-mute-list"><i class="bi bi-mic-mute"></i> Lấy danh sách người không bật mic</div>
       </li>
+      <li class='fw-bold'  >
+      <div class="btn-grouping"><i class="bi bi-mic-mute"></i> Chia nhóm</div>
+      <textarea id="txt-grouping" name="txt-grouping" class="txt-grouping d-none" rows="4" cols="50"></textarea>
+      <button class="btn btn-primary d-none btn-import-group">Gửi</button>
+      </li>
     </ul>
   </div>
 </div>

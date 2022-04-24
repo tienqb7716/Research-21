@@ -1,4 +1,9 @@
-let btnMute;
+let btnMute = document.querySelector('.btn-get-mute-list');
+let btnGrouping = document.querySelector('.btn-grouping');
+let txtGrouping = document.querySelector('.txt-grouping');
+let btnImportGroup = document.querySelector('.btn-import-group');
+let txtChat;
+let btnChat;
 
 async function sendMessageBGJS(type) {
     let result = await chrome.runtime.sendMessage({
@@ -6,7 +11,19 @@ async function sendMessageBGJS(type) {
     });
 }
 
-btnMute = document.querySelector('.btn-get-mute-list');
+// Grouping
+btnGrouping.addEventListener('click', function () {
+    txtGrouping.classList.toggle('d-none');
+    btnImportGroup.classList.toggle('d-none');
+
+});
+// Import Group
+btnImportGroup.addEventListener('click', function(){
+    txtChat = document.querySelector('#bfTqV')
+    btnChat = document.querySelector('#tt-c24')
+    txtChat.textContent = 'a';
+});
+
 
 btnMute.addEventListener('click', function () {
 
@@ -20,7 +37,7 @@ btnMute.addEventListener('click', function () {
 
     const listUser = [...listNodeUser].map(el => {
         if (el.querySelector('.JHK7jb.Nep7Ue.FTMc0c.I118Fc')) {
-           
+
         }
     }
 
@@ -38,5 +55,7 @@ btnMute.addEventListener('click', function () {
     btnSendMessage.disabled = false;
     btnSendMessage.click();
     dataAttendance = [];
-})
+});
+
+
 

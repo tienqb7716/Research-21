@@ -17,11 +17,15 @@ btnGrouping.addEventListener('click', function () {
     btnImportGroup.classList.toggle('d-none');
 
 });
+
 // Import Group
-btnImportGroup.addEventListener('click', function(){
+btnImportGroup.addEventListener('click', function () {
     txtChat = document.querySelector('#bfTqV')
-    btnChat = document.querySelector('#tt-c24')
-    txtChat.textContent = 'a';
+    btnChat = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd')
+    txtChat.value = txtGrouping.value;
+    btnChat.disabled = false;
+    btnChat.click();
+
 });
 
 

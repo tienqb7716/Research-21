@@ -35,7 +35,6 @@
   "permissions": [
     "storage",
     "tabs",
-    "scripting",
-    "http://online.tdc.edu.vn/"
+    "scripting"
   ]
 }

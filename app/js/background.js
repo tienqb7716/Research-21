@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener(
                     sendResponse(true);
                     chrome.tabs.create({ url: chrome.runtime.getURL('TablePerson.html') }); break;
                 }
-            case 'test':
+            case 'getListStudent':
                 {
                     const url = request.data.url;
                     fetch(url, {
@@ -20,6 +20,22 @@ chrome.runtime.onMessage.addListener(
                         .then(response => response.text())
                         .then(response => sendResponse(response))
                         .catch(error => console.log('Error:', error));
+                    break;
+                }
+            case 'printTableListStudent':
+                {
+                    sendResponse(true);
+                    chrome.tabs.create({ url: chrome.runtime.getURL('TablePerson.html') }); break;
+                }
+            case 'printAbsentStudents':
+                    {
+                        sendResponse(true);
+                        chrome.tabs.create({ url: chrome.runtime.getURL('listStudent.html') }); break;
+                    }
+            case 'SaveAbsentStudents':
+                {
+                    let creating = chrome.tabs.create({ url: request.data.url });
+                    sendResponse(true);
                     break;
                 }
         }
@@ -38,4 +54,5 @@ async function getContent() {
 }
 
 chrome.runtime.onInstalled.addListener(details => {
+    // chrome.tabs.create({ url: chrome.runtime.getURL('listStudent.html') });
 });

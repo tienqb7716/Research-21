@@ -2,8 +2,13 @@ function run() {
 
   const actions = {
     attendanceByKeyword: 'attendanceByKeyword',
-    StopAttendanceKeyword: 'StopAttendanceKeyword'
+    stopAttendanceKeyword: 'stopAttendanceKeyword',
+    getListStudent: 'getListStudent',
+    reEnterLinkListStudent: 'reEnterLinkListStudent',
+    stopAttendanceTDC: 'stopAttendanceTDC',
+    startAttendanceTDC: 'startAttendanceTDC'
   }
+
   const tagBtn = "data-extension-actions";
 
   const html = `
@@ -19,10 +24,11 @@ function run() {
             <div class="collapse " id="__diem-danh-collapse">
               <div class="dropdown dropend">
                     <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
-                      data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
-                      Điểm danh theo keyword
+                      data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                      Điểm danh theo từ khoá
                     </p>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <h6 class="dropdown-header">Điểm danh theo từ khoá</h6>
                   <div class="input-group mb-3 px-2">
                     <input type="text" class="form-control input-attendance-keyword" placeholder="Nhập keyword"
                       aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -35,7 +41,7 @@ function run() {
                     </label>
                   </div>
                   <div class="input-group mb-3 p-2">
-                    <button type="button" class="btn btn-danger d-none" ${tagBtn}='${actions.StopAttendanceKeyword}'>Kết thúc điểm
+                    <button type="button" class="btn btn-danger d-none" ${tagBtn}='${actions.stopAttendanceKeyword}'>Kết thúc điểm
                       danh</button>
                   </div>
                 </div>
@@ -45,16 +51,26 @@ function run() {
                 data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
                 Điểm danh trang online.tdc.edu.vn
               </p>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuLink">
               <h6 class="dropdown-header">Điểm danh trang online.tdc.edu.vn</h6>
-            <div class="input-group mb-3 px-2">
-              <input type="text" class="form-control input-attendance-keyword" placeholder="Nhập link danh sách"
-                aria-label="Recipient's username" aria-describedby="button-addon2">
-              <button class="btn btn-outline-primary btn-sm btn-get-student-list" type="button">Lấy danh sách</button>
+            <div class="input-group my-2">
+              <input type="text" class="form-control input-link-online" placeholder="Nhập link danh sách">
+              <button class="btn btn-outline-primary btn-sm " ${tagBtn}='${actions.getListStudent}' type="button">Lấy danh sách</button>
+              <button class="btn btn-outline-danger d-none btn-sm " ${tagBtn}='${actions.reEnterLinkListStudent}' type="button">Nhập lại link</button>
+              <div class="valid-feedback">
+              Lấy danh sách sinh viên thành công
             </div>
-            <div class="input-group mb-3 p-2">
-              <button type="button" class="btn btn-danger btn-sm btn-stop-attendance-keyword d-none">Kết thúc điểm
-                danh</button>
+            <div class="invalid-feedback">
+              Link danh sách sinh viên không hợp lệ
+            </div>
+            </div>
+            <div class=" mb-3 p-2 control-attendance-tdc d-none">
+            <div class="mb-3">
+            <label for="input-tiet-vang" class="form-label">Số tiết vắng</label>
+          <input type="number" class="form-control" min="1" max="9" id="input-tiet-vang" value="5">
+            </div>
+            <button type="button" class="btn rounded-pill btn-success mx-auto d-block" ${tagBtn}='${actions.startAttendanceTDC}'>Bắt đầu</button>
+              <button type="button" class="btn rounded-pill btn-danger mx-auto d-block d-none" ${tagBtn}='${actions.stopAttendanceTDC}'>Kết thúc</button>
             </div>
           </div>
         </div>
@@ -78,8 +94,7 @@ function run() {
             </li>
           </ul>
         </div>
-      </div>
-      
+      </div>   
       <!-- Modal -->
       <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -203,6 +218,45 @@ function run() {
     })
   });
 
+  // list lưu mssv của sinh viên đã Nhập
+
+  let listIDStudentInMeet = [];
+
+  let observerChatlistTDC = new MutationObserver(mutations => {
+    mutations.forEach(function (mutation) {
+      mutation.addedNodes.forEach(element => {
+        if (element.getAttribute('data-sender-id') != "_self_") {
+          let nguoiThamGia = element;
+          if (element.classList.contains('oIy2qc')) {
+            nguoiThamGia = element.parentElement.parentElement;
+          }
+          nguoiThamGia.querySelectorAll('.oIy2qc[data-message-text]').forEach(e => {
+            let rgStudent = /^\d{5}[A-Za-z]{2}\d{4}$/;
+            let idStudent = e.getAttribute('data-message-text').trim();
+            if (rgStudent.test(idStudent)) {
+              const idMeet = nguoiThamGia.getAttribute('data-sender-id').substring(nguoiThamGia.getAttribute('data-sender-id').lastIndexOf('/') + 1)
+              const person = {
+                name: nguoiThamGia.getAttribute('data-sender-name'),
+                idMeet: idMeet,
+                id: idStudent
+              }
+              let oldperson = listIDStudentInMeet.find(function (e) {
+                return e.idMeet == person.idMeet;
+              })
+
+              if (oldperson) {
+                listIDStudentInMeet[listIDStudentInMeet.lastIndexOf(oldperson)].id = person.id;
+              } else {
+                listIDStudentInMeet.push(person);
+              }
+              console.log(listIDStudentInMeet);
+            }
+          });
+        }
+      });
+    })
+  });
+
   const actionsBtn = main.querySelectorAll(`[${tagBtn}]`);
 
   actionsBtn.forEach(btn => {
@@ -211,6 +265,7 @@ function run() {
 
   let keyAttendance = '';
   let dataAttendance = [];
+  let url = '';
 
   const ignoreUppercaseAndLowercase = main.querySelector('#ignoreUppercaseAndLowercase');
 
@@ -218,33 +273,37 @@ function run() {
   let btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
 
   let listChat = document.querySelector('.z38b6');
+  let listStudent = [];
 
   function executeAction() {
-
     if (textMessage == null) {
       textMessage = document.querySelector('#bfTqV');
       btnSendMessage = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd');
       listChat = document.querySelector('.z38b6');
     }
-
-    switch (this.getAttribute('data-extension-actions')) {
+    switch (this.getAttribute(tagBtn)) {
       case actions.attendanceByKeyword:
-        AttendanceKeyword(this);
-        break;
-      case actions.StopAttendanceKeyword:
-        StopAttendanceKeyword(this);
-        break;
+        AttendanceKeyword(this); break;
+      case actions.stopAttendanceKeyword:
+        StopAttendanceKeyword(this); break;
+      case actions.getListStudent:
+        getListStudent(this); break;
+      case actions.reEnterLinkListStudent:
+        reInputLinkListStudent(this); break;
+      case actions.startAttendanceTDC:
+        startAttendanceTDC(this); break;
+      case actions.stopAttendanceTDC:
+        stopAttendanceTDC(this); break;
       default:
         break;
     }
 
   }
-
+  // bắt đầu điểm danh
   function AttendanceKeyword(target) {
 
     const inputKeyword = main.querySelector('.input-attendance-keyword');
     const btnStopAttendanceKeyword = main.querySelector(`[${tagBtn}=${actions.StopAttendanceKeyword}]`);
-
     if (inputKeyword.value != '') {
 
       target.disabled = true;
@@ -264,7 +323,7 @@ function run() {
 
     }
   }
-
+  // kết thúc điểm danh 
   function StopAttendanceKeyword(target) {
 
     // lưu danh sách người
@@ -286,12 +345,106 @@ function run() {
     btnSendMessage.click();
     dataAttendance = [];
   }
+  // bat dau diem danh tdc
+  function startAttendanceTDC(target) {
 
-  let url = 'http://online.tdc.edu.vn/Portlets/Uis_Myspace/Professor/TeachDetail/ListStudentAbsents.aspx?WSID=1089450';
+    const inputKeyword = main.querySelector('#input-tiet-vang');
 
-  sendMessageBGJS('test', { url: url });
+    const btnstopAttendanceTDC = main.querySelector(`[${tagBtn}=${actions.stopAttendanceTDC}]`);
+    const reEnterLinkListStudent = main.querySelector(`[${tagBtn}=${actions.reEnterLinkListStudent}]`);
+    reEnterLinkListStudent.disabled = true;
 
-  async function sendMessageBGJS(type, data) {
+    inputKeyword.disabled = true;
+
+    btnstopAttendanceTDC.classList.remove('d-none');
+    target.classList.add('d-none');
+
+    textMessage.value = `Bắt đầu điểm danh vào trang TDC vào lúc ${(new Date()).toLocaleString()} \n Vui lòng sinh viên nhập mã số sinh viên. `;
+
+    btnSendMessage.disabled = false;
+
+    btnSendMessage.click();
+
+    observerChatlistTDC.observe(listChat, { childList: true, subtree: true, characterData: true });
+  }
+
+  // kêt thúc điểm danh TDC 
+  function stopAttendanceTDC(target) {
+    let list = [];
+    if (listIDStudentInMeet.length > 0) {
+      list =  listStudent.filter(function (e) {
+        return listIDStudentInMeet.some(student => student.id != e.id);
+      })
+    } else {
+      list = listStudent;
+    }
+
+    const soTiet = main.querySelector('#input-tiet-vang').value;
+    const TDCOLINE = {
+      url: url,
+      list, list,
+      soTiet, soTiet
+    }
+    // lưu danh sách người
+    chrome.storage.sync.set({ TDCOLINE: TDCOLINE });
+
+    // gửi yêu cầu
+    sendMessageBGJS('printAbsentStudents');
+
+    // reset cac nut
+    const reEnterLinkListStudent = main.querySelector(`[${tagBtn}=${actions.reEnterLinkListStudent}]`);
+    reEnterLinkListStudent.disabled = false;
+    reInputLinkListStudent(reEnterLinkListStudent);
+    target.classList.add('d-none');
+    const startAttendanceTDC = main.querySelector(`[${tagBtn}=${actions.startAttendanceTDC}]`);
+    startAttendanceTDC.classList.remove('d-none');
+    main.querySelector('#input-tiet-vang').disabled = false;
+
+    // thông báo
+    textMessage.value = `Kết thúc điểm danh vào trang TDC vào lúc ${(new Date()).toLocaleString()} `;
+    btnSendMessage.disabled = false;
+    btnSendMessage.click();
+    listStudent = [];
+    listIDStudentInMeet = [];
+  }
+  // lấy danh sách sinh viên
+  function getListStudent(target) {
+    listStudent = [];
+    const input = main.querySelector('.input-link-online');
+    const btnReenter = main.querySelector(`[${tagBtn}=${actions.reEnterLinkListStudent}]`);
+    url = input.value;
+    let rg1 = /^http\:\/\/online\.tdc\.edu\.vn\/Portlets\/Uis_Myspace\/Professor\/TeachDetail\/ListStudentAbsents\.aspx\?WSID=\d+$/;
+    let rg2 = /^online\.tdc\.edu\.vn\/Portlets\/Uis_Myspace\/Professor\/TeachDetail\/ListStudentAbsents\.aspx\?WSID=\d+$/;
+    if (rg1.test(url) || rg2.test(url)) {
+      sendMessageBGJSGetStudentList('getListStudent', { url: url });
+      input.disabled = true;
+      input.classList.remove('is-invalid');
+      input.classList.add('is-valid');
+      btnReenter.classList.remove('d-none');
+      target.classList.add('d-none');
+      const controlAttendanceTdc = document.querySelector('.control-attendance-tdc');
+      controlAttendanceTdc.classList.remove('d-none');
+    } else {
+      input.classList.remove('is-valid');
+      input.classList.add('is-invalid');
+    }
+  }
+
+  function reInputLinkListStudent(target) {
+    listStudent = [];
+    const input = main.querySelector('.input-link-online');
+    const btnGetLink = main.querySelector(`[${tagBtn}=${actions.getListStudent}]`);
+    input.disabled = false;
+    input.value = [];
+    input.classList.remove('is-invalid');
+    input.classList.remove('is-valid');
+    btnGetLink.classList.remove('d-none');
+    target.classList.add('d-none');
+    const controlAttendanceTdc = document.querySelector('.control-attendance-tdc');
+    controlAttendanceTdc.classList.add('d-none');
+  };
+
+  async function sendMessageBGJSGetStudentList(type, data) {
     let result = await chrome.runtime.sendMessage({
       type: type,
       data: data
@@ -300,7 +453,12 @@ function run() {
         let div = document.createElement("div");
         div.innerHTML = response;
         div.querySelector('#grvListStudents').querySelectorAll(".style31").forEach(element => {
-          console.log(element.children[2].children[0].innerHTML + "-" + element.children[1].children[0].textContent + "-" + element.children[3].children[0].textContent + " " + element.children[4].children[0].textContent);
+          listStudent.push({
+            class: element.children[2].children[0].innerHTML,
+            id: element.children[1].children[0].textContent,
+            firstname: element.children[3].children[0].textContent,
+            lastname: element.children[4].children[0].textContent
+          })
         });
       }
       else {
@@ -309,7 +467,23 @@ function run() {
     });
   }
 
+  // gửi dữ liệu
+  async function sendMessageBGJS(type, data) {
+    let result = await chrome.runtime.sendMessage({
+      type: type,
+      data: data
+    }, function (response) {
+      if (response != undefined && response != "") {
+      }
+      else {
+        console.error("Can't get data");
+      }
+    });
+  }
+
 }
+
+
 
 if (window.location.hostname === 'meet.google.com') {
   let shutdownMeet;

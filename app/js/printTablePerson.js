@@ -11,7 +11,6 @@ chrome.storage.sync.get(['tablePerson'], function (result) {
       tboby.innerHTML += `
         <tr>
         <td >${i++}</td>
-        <td >${element.id}</td>
         <td>${element.name}</td>
          </tr>
         `

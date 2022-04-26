@@ -4,8 +4,10 @@ chrome.runtime.onMessage.addListener(
         switch (request.type) {
             case 'printTablePerson':
                 {
+                    const page  = chrome.runtime.getURL('TablePerson.html')+"?idGoogleMeet="+request.data.idGoogleMeet+'-tablePerson';
+                    let creating = chrome.tabs.create({ url: page });
                     sendResponse(true);
-                    chrome.tabs.create({ url: chrome.runtime.getURL('TablePerson.html') }); break;
+                    break;
                 }
             case 'getListStudent':
                 {
@@ -38,6 +40,13 @@ chrome.runtime.onMessage.addListener(
                     sendResponse(true);
                     break;
                 }
+             case 'pageWheel':
+                {
+                    const page  = chrome.runtime.getURL('listStudent.html')+"?idGoogleMeet="+request.data.idGoogleMeet;
+                    let creating = chrome.tabs.create({ url: page });
+                    sendResponse(true);
+                    break;
+            }
         }
         return true;
     }
@@ -54,5 +63,5 @@ async function getContent() {
 }
 
 chrome.runtime.onInstalled.addListener(details => {
-    // chrome.tabs.create({ url: chrome.runtime.getURL('listStudent.html') });
+    // chrome.tabs.create({ url: chrome.runtime.getURL('wheel.html?idMeet=123') });s
 });

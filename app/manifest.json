@@ -23,7 +23,9 @@
       ],
       "web_accessible_resources": [
         "images/*",
-        "contentScript.js"
+        "contentScript.js",
+        "music/tick.mp3", 
+        "music/votay.mp3"
       ],
       "css": [
         "css/tdc-style.css",

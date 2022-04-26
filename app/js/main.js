@@ -6,6 +6,7 @@ function run() {
     reEnterLinkListStudent: "reEnterLinkListStudent",
     stopAttendanceTDC: "stopAttendanceTDC",
     startAttendanceTDC: "startAttendanceTDC",
+    randomPerson: 'randomPerson'
   };
 
   const tagBtn = "data-extension-actions";
@@ -26,7 +27,7 @@ function run() {
                       aria-expanded="false">
                       Điểm danh theo từ khoá
                   </p>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <div class="dropdown-menu menu-attendance-by-keyword" aria-labelledby="dropdownMenuLink">
                       <h6 class="dropdown-header">Điểm danh theo từ khoá</h6>
                       <div class="input-group mb-3 px-2">
                           <input type="text" class="form-control input-attendance-keyword"
@@ -41,6 +42,17 @@ function run() {
                           <label class="form-check-label ps-2" for="ignoreUppercaseAndLowercase">
                               Bỏ qua chữ hoa và chữ thường
                           </label>
+                          <div class="mt-3 w-100">
+                          <div class="form-check " >
+                              <input type="checkbox" class="form-check-input __checkBoxTimerAttendanceByKeyword" value="checkedValue">
+                              <label for="__countdownTimerAttendanceByKeyword" class="form-label">Hẹn giờ</label>
+                          </div>
+                          <input type="range" class="form-range" min="1" max="60" value="5" step="1" disabled id="__countdownTimerAttendanceByKeyword">
+                          <output class="ps-5">
+                              5
+                          </output>
+                          <span>phút</span>
+                      </div>
                       </div>
                       <div class="input-group mb-3 p-2">
                           <button type="button" class="btn btn-danger d-none"
@@ -91,10 +103,10 @@ function run() {
           <li class='fw-bold'>
               <i class="bi bi-people"></i> Chia nhóm
           </li>
-          <li class='fw-bold'>
+          <li class='fw-bold'  ${tagBtn}='${actions.randomPerson}'>
               <i class="bi bi-disc"></i> Ngẫu nhiên người tham gia
           </li class='fw-bold'>
-          <li class='fw-bold'>
+          <li class='fw-bold' >
               <i class="bi bi-door-open"></i> Tự động xác nhận <span class="form-check float-end form-switch">
                   <input class="form-check-input __toggle-auto-admit" type="checkbox" role="switch"
                       id="toggleAutoAdmit">
@@ -204,18 +216,17 @@ function run() {
 
   /* Create toast instance */
   let toast = new bootstrap.Toast(toastHtml, {
-    autohide: false
+    autohide: false,
   });
 
   btn.addEventListener("click", function () {
-    console.log('ok');
-    toastHtml.classList.remove("d-none")
+    toastHtml.classList.remove("d-none");
     toast.show();
   });
 
-  toastHtml.addEventListener('hidden.bs.toast', function () {
-    toastHtml.classList.add("d-none")
-  })
+  toastHtml.addEventListener("hidden.bs.toast", function () {
+    toastHtml.classList.add("d-none");
+  });
 
   function admitUserIfWaiting() {
     const spanElements = document.getElementsByTagName("span");
@@ -256,7 +267,6 @@ function run() {
           if (element.classList.contains("oIy2qc")) {
             nguoiThamGia = element.parentElement.parentElement;
           }
-
           nguoiThamGia
             .querySelectorAll(".oIy2qc[data-message-text]")
             .forEach((e) => {
@@ -292,6 +302,7 @@ function run() {
                 const person = {
                   name: nguoiThamGia.getAttribute("data-sender-name"),
                   id: id,
+                  datetime: (new Date().toLocaleString()),
                 };
                 if (!dataAttendance.some((e) => e.id === id)) {
                   dataAttendance.push(person);
@@ -301,6 +312,12 @@ function run() {
         }
       });
     });
+  });
+
+  main.querySelectorAll('.form-range').forEach(element => {
+      element.addEventListener('input', function () {
+        this.nextElementSibling.value = this.value
+      })
   });
 
   // list lưu mssv của sinh viên đã Nhập
@@ -344,7 +361,6 @@ function run() {
                 } else {
                   listIDStudentInMeet.push(person);
                 }
-                console.log(listIDStudentInMeet);
               }
             });
         }
@@ -370,6 +386,58 @@ function run() {
   let btnSendMessage = document.querySelector(
     ".VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd"
   );
+
+  let listPersonFrame = document.querySelector("[role=list]");
+  const observerlistPersonFrame = new MutationObserver(function (mutations) {
+    mutations.forEach((mutation) => {
+      if (mutation.addedNodes[0]) {
+        const img = mutation.addedNodes[0].querySelector("img.KjWwNd").src;
+        const name =
+          mutation.addedNodes[0].querySelector("span.zWGUib").textContent;
+        const id = mutation.addedNodes[0].getAttribute("data-participant-id");
+        personInMeet.push({
+          img: img,
+          name,
+          name,
+          id,
+          id,
+        });
+        chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
+      } else if (mutation.removedNodes[0]) {
+        const id = mutation.removedNodes[0].getAttribute("data-participant-id");
+        personInMeet = personInMeet.filter((el) => {
+          return el.id != id;
+        });
+        chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
+      }
+    });
+  });
+
+  let personInMeet = [];
+  let getListPersonframeSetTimeout = setTimeout(function getListPersonframe() {
+    listPersonFrame = document.querySelector("[role=list]");
+    if (listPersonFrame == null) {
+      getListPersonframeSetTimeout = setTimeout(getListPersonframe, 200);
+    } else {
+      for (let i = 0; i < listPersonFrame.children.length; i++) {
+        let img = listPersonFrame.children[i].querySelector("img.KjWwNd").src;
+        let name =
+          listPersonFrame.children[i].querySelector("span.zWGUib").textContent;
+        let id = listPersonFrame.children[i].getAttribute(
+          "data-participant-id"
+        );
+        personInMeet.push({
+          img: img,
+          name,
+          name,
+          id,
+          id,
+        });
+        chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
+      }
+      observerlistPersonFrame.observe(listPersonFrame, { childList: true });
+    }
+  }, 200);
 
   let listChat = document.querySelector(".z38b6");
   let listStudent = [];
@@ -401,22 +469,39 @@ function run() {
       case actions.stopAttendanceTDC:
         stopAttendanceTDC(this);
         break;
+      case actions.randomPerson:
+         {
+          sendMessageBGJS("pageWheel", {idGoogleMeet:idGoogleMeet});
+         }
+          break;
       default:
         break;
     }
   }
+  const countdownTimerAttendanceByKeywordRange = main.querySelector('#__countdownTimerAttendanceByKeyword');
+
+  const checkCountdownTimerByKW = main.querySelector('.__checkBoxTimerAttendanceByKeyword');
+  checkCountdownTimerByKW.addEventListener('change',function () {
+    countdownTimerAttendanceByKeywordRange.disabled = !this.checked;
+  })
   // bắt đầu điểm danh
   function AttendanceKeyword(target) {
     const inputKeyword = main.querySelector(".input-attendance-keyword");
     const btnStopAttendanceKeyword = main.querySelector(
-      `[${tagBtn}=${actions.StopAttendanceKeyword}]`
+      `[${tagBtn}=${actions.stopAttendanceKeyword}]`
     );
+    console.log(countdownTimerAttendanceByKeywordRange.value * 60 *1000);
+    if (checkCountdownTimerByKW.checked===true) {
+      setTimeout(function () {
+        StopAttendanceKeyword(btnStopAttendanceKeyword);
+      }, (countdownTimerAttendanceByKeywordRange.value * 60 *1000));
+    }
     if (inputKeyword.value != "") {
       target.disabled = true;
-      inputKeyword.disabled = true;
-      ignoreUppercaseAndLowercase.disabled = true;
       keyAttendance = inputKeyword.value;
-
+      main.querySelectorAll(".menu-attendance-by-keyword input").forEach(input => {
+        input.disabled = true;
+      });
       btnStopAttendanceKeyword.classList.remove("d-none");
 
       textMessage.value = `Bắt đầu điểm danh theo từ khoá "${keyAttendance}" vào lúc ${new Date().toLocaleString()} `;
@@ -427,25 +512,26 @@ function run() {
 
       observerChatlist.observe(listChat, {
         childList: true,
-        subtree: true,
-        characterData: true,
+        subtree: true
       });
     }
   }
   // kết thúc điểm danh
   function StopAttendanceKeyword(target) {
     // lưu danh sách người
-    chrome.storage.sync.set({ tablePerson: JSON.stringify(dataAttendance) });
+    const actionBG = idGoogleMeet+'-tablePerson';
+    chrome.storage.sync.set({ [actionBG]: dataAttendance });
 
     // gửi yêu cầu
-    sendMessageBGJS("printTablePerson");
+    sendMessageBGJS("printTablePerson",{idGoogleMeet:idGoogleMeet});
 
     const btnAttendanceKeyword = main.querySelector(
       `[${tagBtn}=${actions.attendanceByKeyword}]`
     );
     btnAttendanceKeyword.disabled = false;
-    inputKeyword.disabled = false;
-    ignoreUppercaseAndLowercase.disabled = false;
+    main.querySelectorAll(".menu-attendance-by-keyword input").forEach(input => {
+      input.disabled = true;
+    });
     observerChatlist.disconnect();
     target.classList.add("d-none");
 
@@ -532,6 +618,7 @@ function run() {
     listStudent = [];
     listIDStudentInMeet = [];
   }
+
   // lấy danh sách sinh viên
   function getListStudent(target) {
     listStudent = [];
@@ -578,7 +665,7 @@ function run() {
     );
     controlAttendanceTdc.classList.add("d-none");
   }
-
+  // gui yeu cau lay danh sach sinh vien
   async function sendMessageBGJSGetStudentList(type, data) {
     let result = await chrome.runtime.sendMessage(
       {
@@ -624,6 +711,10 @@ function run() {
   }
 }
 
+const idGoogleMeet = document
+  .querySelector("[rel=canonical]")
+  .href.replace("https://meet.google.com/", "");
+
 if (window.location.hostname === "meet.google.com") {
   let shutdownMeet;
   // kiểm tra thay đổi và lấy các đối tượng
@@ -635,7 +726,7 @@ if (window.location.hostname === "meet.google.com") {
         if (element.textContent == "people_alt") {
           setTimeout(() => {
             element.click();
-          }, 1000);
+          }, 700);
         } else {
           if (element.textContent == "chat") {
             element.click();
@@ -648,3 +739,6 @@ if (window.location.hostname === "meet.google.com") {
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
+window.addEventListener('beforeunload', event => {
+ chrome.storage.sync.clear();
+});

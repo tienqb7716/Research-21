@@ -26,41 +26,34 @@ chrome.runtime.onMessage.addListener(
                 }
             case 'printTableListStudent':
                 {
-                    sendResponse(true);
                     chrome.tabs.create({ url: chrome.runtime.getURL('TablePerson.html') }); break;
                 }
             case 'printAbsentStudents':
                     {
-                        sendResponse(true);
                         chrome.tabs.create({ url: chrome.runtime.getURL('listStudent.html') }); break;
                     }
             case 'SaveAbsentStudents':
                 {
                     let creating = chrome.tabs.create({ url: request.data.url });
-                    sendResponse(true);
                     break;
                 }
              case 'pageWheel':
                 {
                     const page  = chrome.runtime.getURL('wheel.html')+"?idGoogleMeet="+request.data.idGoogleMeet;
-                    let creating = chrome.tabs.create({ url: page });
-                    sendResponse(true);
+                    let createData = {
+                        url: page,
+                        width: 1000,
+                        height: 1200
+                    }
+                    chrome.windows.create(createData, (window) => {
+                        console.log(window)
+                    })
                     break;
             }
         }
         return true;
     }
 );
-
-async function getContent() {
-    let url = 'http://online.tdc.edu.vn/Portlets/Uis_Myspace/Professor/TeachDetail/ListStudentAbsents.aspx?WSID=1089450';
-    const response = await fetch(url, {
-        method: 'GET'
-    })
-    let result = await response.text();
-    data = result;
-    // return result;
-}
 
 chrome.runtime.onInstalled.addListener(details => {
     // chrome.tabs.create({ url: chrome.runtime.getURL('wheel.html?idMeet=123') });s

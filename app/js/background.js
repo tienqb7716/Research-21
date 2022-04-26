@@ -42,7 +42,7 @@ chrome.runtime.onMessage.addListener(
                 }
              case 'pageWheel':
                 {
-                    const page  = chrome.runtime.getURL('listStudent.html')+"?idGoogleMeet="+request.data.idGoogleMeet;
+                    const page  = chrome.runtime.getURL('wheel.html')+"?idGoogleMeet="+request.data.idGoogleMeet;
                     let creating = chrome.tabs.create({ url: page });
                     sendResponse(true);
                     break;

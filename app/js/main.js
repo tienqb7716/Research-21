@@ -739,6 +739,3 @@ if (window.location.hostname === "meet.google.com") {
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
-window.addEventListener('beforeunload', event => {
- chrome.storage.sync.clear();
-});

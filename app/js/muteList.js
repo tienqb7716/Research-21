@@ -1,76 +1,150 @@
-let btnMute = document.querySelector('.btn-get-mute-list');
-let btnGrouping = document.querySelector('.btn-grouping');
-let txtGrouping = document.querySelector('.txt-grouping');
-let btnImportGroup = document.querySelector('.btn-import-group');
-let btnSaveGroupingList = document.querySelector('.btn-save-grouping-list');
-let txtChat;
-let btnChat;
+let muteListContainer =
+    `
+<div class="toast-style shadow">
+    <div id="myToast" class="toast hide overflow-auto w-100 h-100 d-none" style="width: 300px; max-height: 350px;"
+        role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header text-primary bg-white position-absolute mw-100 " style="width: 99%;">
+            <strong class="me-auto list-title"></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body mt-4 ">
+            <p class="total-members">Tổng số: 0</p>
+            <table class="table table-bordered mt-2">
+                <thead>
+                    <tr>
+                        <th scope="col">Họ tên</th>
+                        <th scope="col">Hình</th>
+                    </tr>
+                </thead>
+                <tbody class="list-container">                             
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+`;
 
-async function sendMessageBGJS(type) {
-    let result = await chrome.runtime.sendMessage({
-        type: type
+if (window.location.hostname === "meet.google.com") {
+    let shutdownMeet;
+    // kiểm tra thay đổi và lấy các đối tượng
+    let observer = new MutationObserver((mutations) => {
+        shutdownMeet = document.querySelector(".NHaLPe");
+        if (shutdownMeet) {
+            runMeet();
+            observer.disconnect();
+        }
     });
+    observer.observe(document.body, { childList: true, subtree: true });
 }
 
-// Grouping
-btnGrouping.addEventListener('click', function () {
-    txtGrouping.classList.toggle('d-none');
-    btnImportGroup.classList.toggle('d-none');
+function runMeet() {
+    document.body.insertAdjacentHTML('beforeend', muteListContainer);
+    const wrapper = document.querySelector(".wrapper-rs");
+    header = wrapper.querySelector(".wrapper-rs>header");
+    main = document.querySelector(".wrapper-rs .content");
+    let btnMuteList = main.querySelector("#btn-mute-list");
+    let btnUnraiseHand = main.querySelector("#btn-unraisehand-list");
+    let toastHtml = document.querySelector("#myToast");
 
-});
+    /* Create toast instance */
+    let toast = new bootstrap.Toast(toastHtml, {
+        autohide: false,
+    });
 
-// Import Group
-btnImportGroup.addEventListener('click', function () {
-    txtChat = document.querySelector('#bfTqV')
-    btnChat = document.querySelector('.VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.tWDL4c.Cs0vCd')
-    txtChat.value = txtGrouping.value;
-    btnChat.disabled = false;
-    btnChat.click();
+    let personListTimeout = setTimeout(function getPersonList() {
+        personList = document.querySelector(".AE8xFb.GvcuGe");
+        itemQty = document.querySelector('.total-members')
+        let raiseHandObserver = document.querySelector('div[jscontroller=Qexnme]');
+        let listTitle = document.querySelector('.list-title');
 
-});
-
-// Save grouping list
-btnSaveGroupingList.addEventListener('click', function(){
-    const escapeHTMLPolicy = trustedTypes.createPolicy("myEscapePolicy", {
-        createHTML: (string) => string
-      });
-      
-      el = document.querySelector('.koV58.Zi94Db').parentNode;
-      const escaped = escapeHTMLPolicy.createHTML(`<span class="badge bg-secondary text-white">New</span>`);
-      console.log(el.insertAdjacentHTML("afterbegin", escaped));
-});
-
-btnMute.addEventListener('click', function () {
-
-    // lưu danh sách người
-    // chrome.storage.sync.set({ tablePerson: JSON.stringify(dataAttendance) });
-
-    // gửi yêu cầu
-    sendMessageBGJS('printMuteList');
-
-    const listNodeUser = document.querySelectorAll('.cxdMu');
-
-    const listUser = [...listNodeUser].map(el => {
-        if (el.querySelector('.JHK7jb.Nep7Ue.FTMc0c.I118Fc')) {
-
+        if (personList == null) {
+            personListTimeout = setTimeout(getPersonList, 300);
         }
-    }
+        else {
+            listContainer = document.querySelector(".list-container");
 
-    )
+            // Mute list listener
+            btnMuteList.addEventListener("click", function () {
+                listTitle.innerHTML = 'Danh sách không bật mic';
+                toast.show();
+                toastHtml.classList.toggle("d-none");
 
-    console.log(listUser);
+                qty = 0;
+                renderItem();
+                let checkChangeMuteList = new MutationObserver((mutations) => {
+                    renderItem();
+                });
+                let observeStudentQty = new MutationObserver(() => {
+                    itemQty.innerHTML = "Tổng số: " + qty;
+                });
+                observeStudentQty.observe(listContainer, { childList: true, subtree: true, attributes: true });
+                checkChangeMuteList.observe(personList, { childList: true, subtree: true, attributes: true });
+            });
 
-    // observerChatlist.disconnect();
-    // this.classList.add('d-none');
+            btnUnraiseHand.addEventListener("click", function () {
+                listTitle.innerHTML = 'Danh sách không giơ tay';
+                toast.show();
+                toastHtml.classList.toggle("d-none");
 
+                let arrAllStudent = Array.from(personList.children); 
 
+               
+                qty = 0;
+                renderItem2(arrAllStudent);
 
-    // thông báo
-    textMessage.value = `Kết thúc điểm danh theo từ khoá "${keyAttendance}" vào lúc ${(new Date()).toLocaleString()} `;
-    btnSendMessage.disabled = false;
-    btnSendMessage.click();
-    dataAttendance = [];
-});
+                let checkChangeRaiseHandList = new MutationObserver(() => {
+                    renderItem2(arrAllStudent);
+                });
+                let observeStudentQty = new MutationObserver(() => {
+                    itemQty.innerHTML = "Tổng số: " + qty;
+                });
+                observeStudentQty.observe(listContainer, { childList: true, subtree: true, attributes: true });
+                checkChangeRaiseHandList.observe(raiseHandObserver, { childList: true, subtree: true, attributes: true });
+            });
+        }
+
+        // FUNCTION: Render items
+        function renderItem() {
+            listContainer.innerHTML = '';
+
+            for (let index = 0; index < personList.children.length; index++) {
+                if (personList.children[index].querySelector('div.FTMc0c') != null) {
+                    listContainer.innerHTML +=
+                        `
+                        <tr class="qty">
+                            <td>${personList.children[index].querySelector('span.zWGUib').textContent}</td>
+                            <td><img class="img-fluid mute-img" src="${personList.children[index].querySelector('img.KjWwNd').src}"/></td>
+                        </tr>
+                        `;
+                }
+            }
+            qty = document.querySelectorAll('.qty').length;
+        }
+
+        function renderItem2(arrAllStudent) {
+            if (raiseHandObserver.children[1] != null) {
+                let arrRaiseHandStudent = Array.from(raiseHandObserver.children[1].children);
+                for (i = 0; i < arrRaiseHandStudent.length; i++) {
+                    arrAllStudent = arrAllStudent.filter(item => item.children[0].children[0].children[0].src !== arrRaiseHandStudent[i].children[0].children[0].children[0].src);
+                }
+            }
+            listContainer.innerHTML = '';
+
+            for (let index = 0; index < arrAllStudent.length; index++) {
+                listContainer.innerHTML +=
+                    `
+                    <tr class="qty">
+                        <td>${arrAllStudent[index].querySelector('span.zWGUib').textContent}</td>
+                        <td><img class="img-fluid item-img" src="${arrAllStudent[index].querySelector('img.KjWwNd').src}"/></td>
+                    </tr>
+                    `;
+            }
+            qty = document.querySelectorAll('.qty').length;
+        }
+    }, 300);
+
+}
+
 
 
 

@@ -24,6 +24,11 @@ chrome.runtime.onMessage.addListener(
                         .catch(error => console.log('Error:', error));
                     break;
                 }
+            case 'getListStudent':
+>>>>>>> tien
+                {
+                    chrome.tabs.create({ url: chrome.runtime.getURL('MuteList.html') }); break;
+                }
             case 'printTableListStudent':
                 {
                     chrome.tabs.create({ url: chrome.runtime.getURL('TablePerson.html') }); sendResponse(true); break;

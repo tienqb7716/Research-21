@@ -19,7 +19,9 @@
       ],
       "js": [
         "js/main.js",
-        "js/bootstrap.bundle.min.js"
+        "js/bootstrap.js",
+        "js/attendanceStudent.js",
+        "js/muteList.js"
       ],
       "web_accessible_resources": [
         "images/*",

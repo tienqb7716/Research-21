@@ -112,54 +112,16 @@ function run() {
                       id="toggleAutoAdmit">
               </span>
           </li>
-          <li class='fw-bold' id="liveToastBtn">
+          <li class='fw-bold' id="btn-mute-list">
               <i class="bi bi-mic-mute"></i> Lấy danh sách người không bật mic
+          </li>
+          <li class='fw-bold' id="btn-unraisehand-list">
+              <i class="bi bi-mic-mute"></i> Lấy danh sách người không giơ tay
           </li>
       </ul>
   </div>
 </div>
-<div class="position-fixed bottom-50 start-0" style="left:50px;z-index:98;">
-        <div id="myToast" class="toast hide overflow-auto w-100 h-100 d-none" style="width: 300px; max-height: 350px;"
-            role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header text-primary bg-white position-absolute mw-100 " style="width: 99%;">
-                <strong class="me-auto">Những người không bật mic</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body mt-4 ">
-                <table class="table table-bordered mt-2">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
 
-                </table>
-            </div>
-        </div>
-    </div>
-  </div>
 <!-- Modal -->
 <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -215,22 +177,22 @@ function run() {
     header.removeEventListener("mousemove", onDrag);
   });
 
-  let btn = main.querySelector("#liveToastBtn");
-  let toastHtml = document.querySelector("#myToast");
+  // let btn = main.querySelector("#liveToastBtn");
+  // let toastHtml = document.querySelector("#myToast");
 
-  /* Create toast instance */
-  let toast = new bootstrap.Toast(toastHtml, {
-    autohide: false,
-  });
+  // /* Create toast instance */
+  // let toast = new bootstrap.Toast(toastHtml, {
+  //   autohide: false,
+  // });
 
-  btn.addEventListener("click", function () {
-    toastHtml.classList.remove("d-none");
-    toast.show();
-  });
+  // btn.addEventListener("click", function () {
+  //   toastHtml.classList.remove("d-none");
+  //   toast.show();
+  // });
 
-  toastHtml.addEventListener("hidden.bs.toast", function () {
-    toastHtml.classList.add("d-none");
-  });
+  // toastHtml.addEventListener("hidden.bs.toast", function () {
+  //   toastHtml.classList.add("d-none");
+  // });
 
   function admitUserIfWaiting() {
     const spanElements = document.getElementsByTagName("span");
@@ -319,9 +281,9 @@ function run() {
   });
 
   main.querySelectorAll('.form-range').forEach(element => {
-      element.addEventListener('input', function () {
-        this.nextElementSibling.value = this.value
-      })
+    element.addEventListener('input', function () {
+      this.nextElementSibling.value = this.value
+    })
   });
 
   // list lưu mssv của sinh viên đã Nhập
@@ -474,10 +436,10 @@ function run() {
         stopAttendanceTDC(this);
         break;
       case actions.randomPerson:
-         {
-          sendMessageBGJS("pageWheel", {idGoogleMeet:idGoogleMeet});
-         }
-          break;
+        {
+          sendMessageBGJS("pageWheel", { idGoogleMeet: idGoogleMeet });
+        }
+        break;
       default:
         break;
     }
@@ -485,7 +447,7 @@ function run() {
   const countdownTimerAttendanceByKeywordRange = main.querySelector('#__countdownTimerAttendanceByKeyword');
 
   const checkCountdownTimerByKW = main.querySelector('.__checkBoxTimerAttendanceByKeyword');
-  checkCountdownTimerByKW.addEventListener('change',function () {
+  checkCountdownTimerByKW.addEventListener('change', function () {
     countdownTimerAttendanceByKeywordRange.disabled = !this.checked;
   })
   // bắt đầu điểm danh
@@ -494,11 +456,11 @@ function run() {
     const btnStopAttendanceKeyword = main.querySelector(
       `[${tagBtn}=${actions.stopAttendanceKeyword}]`
     );
-    console.log(countdownTimerAttendanceByKeywordRange.value * 60 *1000);
-    if (checkCountdownTimerByKW.checked===true) {
+    console.log(countdownTimerAttendanceByKeywordRange.value * 60 * 1000);
+    if (checkCountdownTimerByKW.checked === true) {
       setTimeout(function () {
         StopAttendanceKeyword(btnStopAttendanceKeyword);
-      }, (countdownTimerAttendanceByKeywordRange.value * 60 *1000));
+      }, (countdownTimerAttendanceByKeywordRange.value * 60 * 1000));
     }
     if (inputKeyword.value != "") {
       target.disabled = true;
@@ -523,11 +485,11 @@ function run() {
   // kết thúc điểm danh
   function StopAttendanceKeyword(target) {
     // lưu danh sách người
-    const actionBG = idGoogleMeet+'-tablePerson';
+    const actionBG = idGoogleMeet + '-tablePerson';
     chrome.storage.sync.set({ [actionBG]: dataAttendance });
 
     // gửi yêu cầu
-    sendMessageBGJS("printTablePerson",{idGoogleMeet:idGoogleMeet});
+    sendMessageBGJS("printTablePerson", { idGoogleMeet: idGoogleMeet });
 
     const btnAttendanceKeyword = main.querySelector(
       `[${tagBtn}=${actions.attendanceByKeyword}]`

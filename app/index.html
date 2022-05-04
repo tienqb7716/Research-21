@@ -1,0 +1,95 @@
+<div class="wrapper-rs">
+    <header style="text-align: center;">
+      <i class="bi bi-tools"></i>
+    </header>
+    <div class="content __hide pt-3">
+      <ul>
+        <li class='fw-bold' id="__diem-danh" data-bs-toggle="collapse" data-bs-target="#__diem-danh-collapse">
+          <i class="bi bi-check-all"></i> Điểm danh
+        </li>
+        <div class="collapse " id="__diem-danh-collapse">
+          <div class="dropdown dropend">
+                <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
+                  data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
+                  Điểm danh theo keyword
+                </p>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <div class="input-group mb-3 px-2">
+                <input type="text" class="form-control input-attendance-keyword" placeholder="Nhập keyword"
+                  aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-primary btn-sm btn-attendance-keyword" type="button">Điểm danh</button>
+              </div>
+              <div class="input-group mb-3 px-2">
+                <input class="form-check-input" type="checkbox" value="" id="ignoreUppercaseAndLowercase">
+                <label class="form-check-label ps-2" for="ignoreUppercaseAndLowercase">
+                  Bỏ qua chữ hoa và chữ thường
+                </label>
+              </div>
+              <div class="input-group mb-3 p-2">
+                <button type="button" class="btn btn-danger btn-sm btn-stop-attendance-keyword d-none">Kết thúc điểm
+                  danh</button>
+              </div>
+            </div>
+          </div>
+          <div class="dropdown dropend">
+          <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
+            data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
+            Điểm danh trang online.tdc.edu.vn
+          </p>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <h6 class="dropdown-header">Điểm danh trang online.tdc.edu.vn</h6>
+        <div class="input-group mb-3 px-2">
+          <input type="text" class="form-control input-attendance-keyword" placeholder="Nhập link danh sách"
+            aria-label="Recipient's username" aria-describedby="button-addon2">
+          <button class="btn btn-outline-primary btn-sm btn-attendance-keyword" type="button">Điểm danh</button>
+        </div>
+        <div class="input-group mb-3 p-2">
+          <button type="button" class="btn btn-danger btn-sm btn-stop-attendance-keyword d-none">Kết thúc điểm
+            danh</button>
+        </div>
+      </div>
+    </div>
+        </div>
+        <li class='fw-bold'  data-bs-toggle="modal" data-bs-target="#modelId">
+          <i class="bi bi-clipboard-data"></i> Khảo sát
+        </li>
+        <li class='fw-bold'  >
+          <i class="bi bi-people"></i> Chia nhóm
+        </li>
+        <li class='fw-bold'  >
+          <i class="bi bi-disc"></i> Ngẫu nhiên người tham gia
+        </li class='fw-bold'  >
+        <li class='fw-bold'  >
+          <i class="bi bi-door-open"></i> Tự động xác nhận <span class="form-check float-end form-switch">
+            <input class="form-check-input __toggle-auto-admit" type="checkbox" role="switch" id="toggleAutoAdmit">
+          </span>
+        </li>
+        <li class='fw-bold'  >
+          <div class="btn-get-mute-list"><i class="bi bi-mic-mute"></i> Lấy danh sách người không bật mic</div>
+        </li>
+        <li class='fw-bold'  >
+        <div class="btn-grouping"><i class="bi bi-mic-mute"></i> Chia nhóm</div>
+        <textarea id="w3review" name="w3review" rows="4" cols="50">
+        At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
+        </textarea>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            Add rows here
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

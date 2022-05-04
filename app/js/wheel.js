@@ -13,9 +13,6 @@
 
     function update(result) {
         const people = result[idGoogleMeet];
-        if (people.length == 0) {
-            return;
-        }
         let i = 0;
         people.forEach(person => {
             if (i < people.length - 1) {
@@ -60,8 +57,8 @@
         const wheel = $('.wheel');
         const btnStart = $('.btn-start');
         const msg = $('.msg');
-        var users = [];
-        var listName = [];
+        let users = [];
+        let listName = [];
         if (isSound) {
             playSound();
         }
@@ -201,7 +198,7 @@
         }
         btnStart.addEventListener('click', () => {
             !isRotating && start();
-            var jump = 100;
+            let jump = 100;
             document.querySelector('.pyro').style.display = "none";
             //Audio repeat
             if (isSound) {

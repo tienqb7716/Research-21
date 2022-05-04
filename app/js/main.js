@@ -185,6 +185,10 @@ function run() {
 
   document.body.insertAdjacentHTML("afterbegin", html);
 
+  const idGoogleMeet = document
+  .querySelector("[rel=canonical]")
+  .href.replace("https://meet.google.com/", "");
+
   const wrapper = document.querySelector(".wrapper-rs"),
     header = wrapper.querySelector(".wrapper-rs>header"),
     main = document.querySelector(".wrapper-rs .content");
@@ -436,7 +440,7 @@ function run() {
         chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
       }
       observerlistPersonFrame.observe(listPersonFrame, { childList: true });
-    }
+    };
   }, 200);
 
   let listChat = document.querySelector(".z38b6");
@@ -700,20 +704,11 @@ function run() {
       {
         type: type,
         data: data,
-      },
-      function (response) {
-        if (response != undefined && response != "") {
-        } else {
-          console.error("Can't get data");
-        }
       }
     );
   }
 }
 
-const idGoogleMeet = document
-  .querySelector("[rel=canonical]")
-  .href.replace("https://meet.google.com/", "");
 
 if (window.location.hostname === "meet.google.com") {
   let shutdownMeet;
@@ -739,3 +734,6 @@ if (window.location.hostname === "meet.google.com") {
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
+window.addEventListener('beforeunload', event => {
+ chrome.storage.sync.clear();
+});

@@ -26,11 +26,11 @@ chrome.runtime.onMessage.addListener(
                 }
             case 'printTableListStudent':
                 {
-                    chrome.tabs.create({ url: chrome.runtime.getURL('TablePerson.html') }); break;
+                    chrome.tabs.create({ url: chrome.runtime.getURL('TablePerson.html') }); sendResponse(true); break;
                 }
             case 'printAbsentStudents':
                     {
-                        chrome.tabs.create({ url: chrome.runtime.getURL('listStudent.html') }); break;
+                        chrome.tabs.create({ url: chrome.runtime.getURL('listStudent.html') }); sendResponse(true); break;
                     }
             case 'SaveAbsentStudents':
                 {
@@ -47,7 +47,8 @@ chrome.runtime.onMessage.addListener(
                     }
                     chrome.windows.create(createData, (window) => {
                         console.log(window)
-                    })
+                    });
+                     sendResponse(true);
                     break;
             }
         }

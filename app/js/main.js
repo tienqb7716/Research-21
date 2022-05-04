@@ -6,7 +6,7 @@ function run() {
     reEnterLinkListStudent: "reEnterLinkListStudent",
     stopAttendanceTDC: "stopAttendanceTDC",
     startAttendanceTDC: "startAttendanceTDC",
-    randomPerson: 'randomPerson'
+    randomPerson: "randomPerson",
   };
 
   const tagBtn = "data-extension-actions";
@@ -100,9 +100,6 @@ function run() {
           <li class='fw-bold' data-bs-toggle="modal" data-bs-target="#modelId">
               <i class="bi bi-clipboard-data"></i> Khảo sát
           </li>
-          <li class='fw-bold'>
-              <i class="bi bi-people"></i> Chia nhóm
-          </li>
           <li class='fw-bold'  ${tagBtn}='${actions.randomPerson}'>
               <i class="bi bi-disc"></i> Ngẫu nhiên người tham gia
           </li class='fw-bold'>
@@ -113,29 +110,12 @@ function run() {
               </span>
           </li>
           <li class='fw-bold' id="btn-mute-list">
-              <i class="bi bi-mic-mute"></i> Lấy danh sách người không bật mic
+              <i class="bi bi-mic-mute"></i> Danh sách không bật mic
           </li>
           <li class='fw-bold' id="btn-unraisehand-list">
-              <i class="bi bi-mic-mute"></i> Lấy danh sách người không giơ tay
+          <i class="bi bi-person-dash"></i> Danh sách không giơ tay
           </li>
       </ul>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Modal title</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <div class="container-fluid">
-                  Add rows here
-              </div>
-          </div>
-      </div>
   </div>
 </div>
       `;
@@ -148,8 +128,8 @@ function run() {
   document.body.insertAdjacentHTML("afterbegin", html);
 
   const idGoogleMeet = document
-  .querySelector("[rel=canonical]")
-  .href.replace("https://meet.google.com/", "");
+    .querySelector("[rel=canonical]")
+    .href.replace("https://meet.google.com/", "");
 
   const wrapper = document.querySelector(".wrapper-rs"),
     header = wrapper.querySelector(".wrapper-rs>header"),
@@ -176,23 +156,6 @@ function run() {
     header.classList.remove("active");
     header.removeEventListener("mousemove", onDrag);
   });
-
-  // let btn = main.querySelector("#liveToastBtn");
-  // let toastHtml = document.querySelector("#myToast");
-
-  // /* Create toast instance */
-  // let toast = new bootstrap.Toast(toastHtml, {
-  //   autohide: false,
-  // });
-
-  // btn.addEventListener("click", function () {
-  //   toastHtml.classList.remove("d-none");
-  //   toast.show();
-  // });
-
-  // toastHtml.addEventListener("hidden.bs.toast", function () {
-  //   toastHtml.classList.add("d-none");
-  // });
 
   function admitUserIfWaiting() {
     const spanElements = document.getElementsByTagName("span");
@@ -268,7 +231,7 @@ function run() {
                 const person = {
                   name: nguoiThamGia.getAttribute("data-sender-name"),
                   id: id,
-                  datetime: (new Date().toLocaleString()),
+                  datetime: new Date().toLocaleString(),
                 };
                 if (!dataAttendance.some((e) => e.id === id)) {
                   dataAttendance.push(person);
@@ -280,10 +243,10 @@ function run() {
     });
   });
 
-  main.querySelectorAll('.form-range').forEach(element => {
-    element.addEventListener('input', function () {
-      this.nextElementSibling.value = this.value
-    })
+  main.querySelectorAll(".form-range").forEach((element) => {
+    element.addEventListener("input", function () {
+      this.nextElementSibling.value = this.value;
+    });
   });
 
   // list lưu mssv của sinh viên đã Nhập
@@ -368,13 +331,21 @@ function run() {
           id,
           id,
         });
-        chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
+        try {
+          chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
+        } catch (error) {
+
+        }
       } else if (mutation.removedNodes[0]) {
         const id = mutation.removedNodes[0].getAttribute("data-participant-id");
         personInMeet = personInMeet.filter((el) => {
           return el.id != id;
         });
-        chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
+        try {
+          chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
+        } catch (error) {
+
+        }
       }
     });
   });
@@ -399,10 +370,14 @@ function run() {
           id,
           id,
         });
+        try {
         chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
+        } catch (error) {
+          
+        }
       }
       observerlistPersonFrame.observe(listPersonFrame, { childList: true });
-    };
+    }
   }, 200);
 
   let listChat = document.querySelector(".z38b6");
@@ -444,12 +419,16 @@ function run() {
         break;
     }
   }
-  const countdownTimerAttendanceByKeywordRange = main.querySelector('#__countdownTimerAttendanceByKeyword');
+  const countdownTimerAttendanceByKeywordRange = main.querySelector(
+    "#__countdownTimerAttendanceByKeyword"
+  );
 
-  const checkCountdownTimerByKW = main.querySelector('.__checkBoxTimerAttendanceByKeyword');
-  checkCountdownTimerByKW.addEventListener('change', function () {
+  const checkCountdownTimerByKW = main.querySelector(
+    ".__checkBoxTimerAttendanceByKeyword"
+  );
+  checkCountdownTimerByKW.addEventListener("change", function () {
     countdownTimerAttendanceByKeywordRange.disabled = !this.checked;
-  })
+  });
   // bắt đầu điểm danh
   function AttendanceKeyword(target) {
     const inputKeyword = main.querySelector(".input-attendance-keyword");
@@ -460,14 +439,16 @@ function run() {
     if (checkCountdownTimerByKW.checked === true) {
       setTimeout(function () {
         StopAttendanceKeyword(btnStopAttendanceKeyword);
-      }, (countdownTimerAttendanceByKeywordRange.value * 60 * 1000));
+      }, countdownTimerAttendanceByKeywordRange.value * 60 * 1000);
     }
     if (inputKeyword.value != "") {
       target.disabled = true;
       keyAttendance = inputKeyword.value;
-      main.querySelectorAll(".menu-attendance-by-keyword input").forEach(input => {
-        input.disabled = true;
-      });
+      main
+        .querySelectorAll(".menu-attendance-by-keyword input")
+        .forEach((input) => {
+          input.disabled = true;
+        });
       btnStopAttendanceKeyword.classList.remove("d-none");
 
       textMessage.value = `Bắt đầu điểm danh theo từ khoá "${keyAttendance}" vào lúc ${new Date().toLocaleString()} `;
@@ -478,14 +459,14 @@ function run() {
 
       observerChatlist.observe(listChat, {
         childList: true,
-        subtree: true
+        subtree: true,
       });
     }
   }
   // kết thúc điểm danh
   function StopAttendanceKeyword(target) {
     // lưu danh sách người
-    const actionBG = idGoogleMeet + '-tablePerson';
+    const actionBG = idGoogleMeet + "-tablePerson";
     chrome.storage.sync.set({ [actionBG]: dataAttendance });
 
     // gửi yêu cầu
@@ -495,9 +476,11 @@ function run() {
       `[${tagBtn}=${actions.attendanceByKeyword}]`
     );
     btnAttendanceKeyword.disabled = false;
-    main.querySelectorAll(".menu-attendance-by-keyword input").forEach(input => {
-      input.disabled = true;
-    });
+    main
+      .querySelectorAll(".menu-attendance-by-keyword input")
+      .forEach((input) => {
+        input.disabled = true;
+      });
     observerChatlist.disconnect();
     target.classList.add("d-none");
 
@@ -662,15 +645,12 @@ function run() {
 
   // gửi dữ liệu
   async function sendMessageBGJS(type, data) {
-    let result = await chrome.runtime.sendMessage(
-      {
-        type: type,
-        data: data,
-      }
-    );
+    let result = await chrome.runtime.sendMessage({
+      type: type,
+      data: data,
+    });
   }
 }
-
 
 if (window.location.hostname === "meet.google.com") {
   let shutdownMeet;
@@ -696,6 +676,8 @@ if (window.location.hostname === "meet.google.com") {
   });
   observer.observe(document.body, { childList: true, subtree: true });
 }
-window.addEventListener('beforeunload', event => {
- chrome.storage.sync.clear();
+window.addEventListener("beforeunload", (event) => {
+  try {
+    chrome.storage.sync.clear();
+  } catch (error) { }
 });

@@ -53,9 +53,30 @@ function runMeet() {
 
     let personListTimeout = setTimeout(function getPersonList() {
         personList = document.querySelector(".AE8xFb.GvcuGe");
+        let arrAllStudent;
         itemQty = document.querySelector('.total-members')
         let raiseHandObserver = document.querySelector('div[jscontroller=Qexnme]');
         let listTitle = document.querySelector('.list-title');
+
+        let observeStudentQty = new MutationObserver(() => {
+            itemQty.innerHTML = "Tổng số: " + qty;
+        });
+
+        let checkChangeMuteList = new MutationObserver((mutations) => {
+            renderItem();
+        });
+
+        let checkChangeRaiseHandList = new MutationObserver(() => {
+            renderItem2(arrAllStudent);
+        });
+
+
+        toastHtml.addEventListener('hidden.bs.toast', function () {
+            observeStudentQty.disconnect();
+            checkChangeMuteList.disconnect();
+            checkChangeRaiseHandList.disconnect();
+        })
+
 
         if (personList == null) {
             personListTimeout = setTimeout(getPersonList, 300);
@@ -71,12 +92,7 @@ function runMeet() {
 
                 qty = 0;
                 renderItem();
-                let checkChangeMuteList = new MutationObserver((mutations) => {
-                    renderItem();
-                });
-                let observeStudentQty = new MutationObserver(() => {
-                    itemQty.innerHTML = "Tổng số: " + qty;
-                });
+
                 observeStudentQty.observe(listContainer, { childList: true, subtree: true, attributes: true });
                 checkChangeMuteList.observe(personList, { childList: true, subtree: true, attributes: true });
             });
@@ -86,18 +102,11 @@ function runMeet() {
                 toast.show();
                 toastHtml.classList.toggle("d-none");
 
-                let arrAllStudent = Array.from(personList.children); 
+                arrAllStudent = Array.from(personList.children);
 
-               
                 qty = 0;
                 renderItem2(arrAllStudent);
 
-                let checkChangeRaiseHandList = new MutationObserver(() => {
-                    renderItem2(arrAllStudent);
-                });
-                let observeStudentQty = new MutationObserver(() => {
-                    itemQty.innerHTML = "Tổng số: " + qty;
-                });
                 observeStudentQty.observe(listContainer, { childList: true, subtree: true, attributes: true });
                 checkChangeRaiseHandList.observe(raiseHandObserver, { childList: true, subtree: true, attributes: true });
             });

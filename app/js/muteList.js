@@ -122,7 +122,7 @@ function runMeet() {
                         `
                         <tr class="qty">
                             <td>${personList.children[index].querySelector('span.zWGUib').textContent}</td>
-                            <td><img class="img-fluid mute-img" src="${personList.children[index].querySelector('img.KjWwNd').src}"/></td>
+                            <td><img class="img-fluid item-img" src="${personList.children[index].querySelector('img.KjWwNd').src}"/></td>
                         </tr>
                         `;
                 }

@@ -509,6 +509,7 @@ function run() {
   });
   const timerAttendanceByKeyword = main.querySelector('.timer-' + actions.attendanceByKeyword);
   let countDownAttendanceByKeyword;
+  let timeOutAttendanceByKeyword;
   // bắt đầu điểm danh
   function AttendanceKeyword(target) {
     const inputKeyword = main.querySelector(".input-attendance-keyword");
@@ -519,7 +520,7 @@ function run() {
     if (inputKeyword.value != "") {
 
       if (checkCountdownTimerByKW.checked === true) {
-        setTimeout(function () {
+        timeOutAttendanceByKeyword =  setTimeout(function () {
           StopAttendanceKeyword(btnStopAttendanceKeyword);
         }, countdownTimerAttendanceByKeywordRange.value * 60 * 1000);
         let countDownTime = countdownTimerAttendanceByKeywordRange.value * 60;
@@ -560,6 +561,9 @@ function run() {
     timerAttendanceByKeyword.classList.add('d-none');
     if (countDownAttendanceByKeyword) {
       clearInterval(countDownAttendanceByKeyword);
+    }
+    if (timeOutAttendanceByKeyword) {
+      clearTimeout(timeOutAttendanceByKeyword);
     }
     // lưu danh sách người
     const actionBG = idGoogleMeet + "-tablePerson";
@@ -604,6 +608,7 @@ function run() {
   });
   const timerAttendanceByTDC = main.querySelector('.timer-' + actions.startAttendanceTDC);
   let countdownTimerAttendanceByTDC;
+  let timeOutAttendanceByTDC;
   // bat dau diem danh tdc
   function startAttendanceTDC(target) {
     const inputKeyword = main.querySelector("#input-tiet-vang");
@@ -618,7 +623,7 @@ function run() {
 
       let countDownTime = countdownTimerAttendanceByTDCRange.value * 60;
 
-      setTimeout(function () {
+      timeOutAttendanceByTDC = setTimeout(function () {
         stopAttendanceTDC(btnstopAttendanceTDC);
       }, countDownTime * 1000);
 
@@ -662,6 +667,9 @@ function run() {
     timerAttendanceByTDC.classList.add('d-none');
     if (countdownTimerAttendanceByTDC) {
       clearInterval(countdownTimerAttendanceByTDC);
+    }
+    if (timeOutAttendanceByTDC) {
+      clearTimeout(timeOutAttendanceByTDC);
     }
     let list = [];
     if (listIDStudentInMeet.length > 0) {

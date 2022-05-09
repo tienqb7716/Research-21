@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê khảo sát</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+</head>
+
+<body class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <canvas id="myChart" width="400" height="400"></canvas>
+                <canvas id="myPie" style="width: 500px;height: 500px;display: none;"></canvas>
+            </div>
+            <div class="col-sm-6">
+                <div style="color: rgba(14, 191, 207, 0.75);">
+                    <i class="fa-solid fa-chart-column on-column" style="font-size: 25px;margin-right: 25px; cursor: pointer;"></i>
+                    <i class="fa-solid fa-chart-pie on-pie" style="font-size: 25px;cursor: pointer;"></i>
+                </div>
+                <div style="overflow-y:auto;height: 300px;">
+                    <table class="table mt-3">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Selected</th>
+                            </tr>
+                        </thead>
+                        <tbody class="data-table text-white">
+                            <!-- innerHTML data table -->
+                        </tbody>
+                    </table>
+                </div>
+                <div style="overflow-x:auto;height: 200px;margin-top: 25px;">
+                    <table class="table text-center">
+
+                        <thead class="table-dark">
+                            <tr class="table-ratio">
+                                <th scope="col">Title</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-white">
+                            <tr class="data-ratio">
+                                <th scope="row" class="bg-dark">Tỉ lệ</th>
+                            </tr>
+                            <tr class="data-ratio-qty">
+                                <th scope="row" class="bg-dark">Qty</th>
+                            </tr>
+                            <!-- innerHTML data table -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="./js/chart.js-3.7.1/package/dist/chart.min.js"></script>
+    <script src="./js/chart.js-3.7.1/package/chartjs-plugin-datalabels.min.js"></script>
+    <script src="./js/chart.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

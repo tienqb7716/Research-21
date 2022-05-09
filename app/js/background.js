@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(
         switch (request.type) {
             case 'printTablePerson':
                 {
-                    const page  = chrome.runtime.getURL('TablePerson.html')+"?idGoogleMeet="+request.data.idGoogleMeet+'-tablePerson';
+                    const page = chrome.runtime.getURL('TablePerson.html') + "?idGoogleMeet=" + request.data.idGoogleMeet + '-tablePerson';
                     let creating = chrome.tabs.create({ url: page });
                     sendResponse(true);
                     break;
@@ -29,17 +29,17 @@ chrome.runtime.onMessage.addListener(
                     chrome.tabs.create({ url: chrome.runtime.getURL('TablePerson.html') }); sendResponse(true); break;
                 }
             case 'printAbsentStudents':
-                    {
-                        chrome.tabs.create({ url: chrome.runtime.getURL('listStudent.html') }); sendResponse(true); break;
-                    }
+                {
+                    chrome.tabs.create({ url: chrome.runtime.getURL('listStudent.html') }); sendResponse(true); break;
+                }
             case 'SaveAbsentStudents':
                 {
                     let creating = chrome.tabs.create({ url: request.data.url });
                     break;
                 }
-             case 'pageWheel':
+            case 'pageWheel':
                 {
-                    const page  = chrome.runtime.getURL('wheel.html')+"?idGoogleMeet="+request.data.idGoogleMeet;
+                    const page = chrome.runtime.getURL('wheel.html') + "?idGoogleMeet=" + request.data.idGoogleMeet;
                     let createData = {
                         url: page,
                         width: 1000,
@@ -48,8 +48,14 @@ chrome.runtime.onMessage.addListener(
                     chrome.windows.create(createData, (window) => {
                         console.log(window)
                     });
-                     sendResponse(true);
+                    sendResponse(true);
                     break;
+                }
+            case 'survey': {
+                const page = chrome.runtime.getURL('chart.html') + "?idGoogleMeet=" + request.data.idGoogleMeet + '-survey';
+                let creating = chrome.tabs.create({ url: page });
+                sendResponse(true);
+                break;
             }
         }
         return true;

@@ -7,6 +7,8 @@ function run() {
     stopAttendanceTDC: "stopAttendanceTDC",
     startAttendanceTDC: "startAttendanceTDC",
     randomPerson: "randomPerson",
+    survey: "survey",
+    stopSurvey: "stopSurvey"
   };
 
   const tagBtn = "data-extension-actions";
@@ -17,65 +19,62 @@ function run() {
   </header>
   <div class="content __hide pt-3">
       <ul>
-          <li class='fw-bold' id="__diem-danh" data-bs-toggle="collapse" data-bs-target="#__diem-danh-collapse">
+          <li class='fw-bold item-content' id="__diem-danh" data-bs-toggle="collapse"
+              data-bs-target="#__diem-danh-collapse">
               <i class="bi bi-check-all"></i> Điểm danh
           </li>
           <div class="collapse " id="__diem-danh-collapse">
               <div class="dropdown dropend">
-                  <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button"
-                      id="dropdownMenuLink" data-bs-toggle="dropdown" data-bs-auto-close="false"
-                      aria-expanded="false">
+                  <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button" id="dropdownMenuLink"
+                      data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
                       Điểm danh theo từ khoá
                   </p>
                   <div class="dropdown-menu menu-attendance-by-keyword" aria-labelledby="dropdownMenuLink">
                       <h6 class="dropdown-header">Điểm danh theo từ khoá</h6>
                       <div class="input-group mb-3 px-2">
-                          <input type="text" class="form-control input-attendance-keyword"
-                              placeholder="Nhập keyword" aria-label="Recipient's username"
-                              aria-describedby="button-addon2">
-                          <button class="btn btn-outline-primary btn-sm"
-                              ${tagBtn}='${actions.attendanceByKeyword}' type="button">Điểm danh</button>
+                          <input type="text" class="form-control input-attendance-keyword" placeholder="Nhập keyword"
+                              aria-label="Recipient's username" aria-describedby="button-addon2">
+                          <button class="btn btn-outline-primary btn-sm" ${tagBtn}='${actions.attendanceByKeyword}'
+                              type="button">Điểm danh</button>
                       </div>
                       <div class="input-group mb-3 px-2">
-                          <input class="form-check-input" type="checkbox" value=""
-                              id="ignoreUppercaseAndLowercase">
+                          <input class="form-check-input" type="checkbox" value="" id="ignoreUppercaseAndLowercase">
                           <label class="form-check-label ps-2" for="ignoreUppercaseAndLowercase">
                               Bỏ qua chữ hoa và chữ thường
                           </label>
                           <div class="mt-3 w-100">
-                          <div class="form-check " >
-                              <input type="checkbox" class="form-check-input __checkBoxTimerAttendanceByKeyword" value="checkedValue">
-                              <label for="__countdownTimerAttendanceByKeyword" class="form-label">Hẹn giờ</label>
+                              <div class="form-check ">
+                                  <input type="checkbox" class="form-check-input __checkBoxTimerAttendanceByKeyword"
+                                      value="checkedValue">
+                                  <label for="__countdownTimerAttendanceByKeyword" class="form-label">Hẹn giờ</label>
+                              </div>
+                              <input type="range" class="form-range" min="1" max="60" value="5" step="1" disabled
+                                  id="__countdownTimerAttendanceByKeyword">
+                              <output class="ps-5">
+                                  5
+                              </output>
+                              <span>phút</span>
                           </div>
-                          <input type="range" class="form-range" min="1" max="60" value="5" step="1" disabled id="__countdownTimerAttendanceByKeyword">
-                          <output class="ps-5">
-                              5
-                          </output>
-                          <span>phút</span>
-                      </div>
                       </div>
                       <div class="input-group d-none p-2 text-center timer-${actions.attendanceByKeyword}">
-                      Kết thúc sau &ensp; <span class="countdown-${actions.attendanceByKeyword}"></span>
-                       </div>
+                          Kết thúc sau &ensp; <span class="countdown-${actions.attendanceByKeyword}"></span>
+                      </div>
                       <div class="input-group p-2">
                           <button type="button" class="btn btn-danger d-none"
                               ${tagBtn}='${actions.stopAttendanceKeyword}'>Kết thúc điểm
                               danh</button>
                       </div>
-
                   </div>
               </div>
               <div class="dropdown dropend">
                   <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button"
-                      id="dropdownMenuLink" data-bs-toggle="dropdown" data-bs-auto-close="false"
-                      aria-expanded="false">
+                      data-bs-toggle="dropdown" data-bs-auto-close="false" aria-expanded="false">
                       Điểm danh trang online.tdc.edu.vn
                   </p>
-                  <div class="dropdown-menu p-3" aria-labelledby="dropdownMenuLink">
+                  <div class="dropdown-menu p-3">
                       <h6 class="dropdown-header">Điểm danh trang online.tdc.edu.vn</h6>
                       <div class="input-group my-2">
-                          <input type="text" class="form-control input-link-online"
-                              placeholder="Nhập link danh sách">
+                          <input type="text" class="form-control input-link-online" placeholder="Nhập link danh sách">
                           <button class="btn btn-outline-primary btn-sm " ${tagBtn}='${actions.getListStudent}'
                               type="button">Lấy danh sách</button>
                           <button class="btn btn-outline-danger d-none btn-sm "
@@ -94,23 +93,23 @@ function run() {
                                   value="5">
                           </div>
                           <div class="my-3 w-100">
-                          <div class="form-check ">
-                              <input type="checkbox"
-                                  class="form-check-input __checkBox-${actions.startAttendanceTDC}"
-                                  value="checkedValue">
-                              <label for="__countdown-${actions.startAttendanceTDC}" class="form-label">Hẹn
-                                  giờ</label>
+                              <div class="form-check ">
+                                  <input type="checkbox"
+                                      class="form-check-input __checkBox-${actions.startAttendanceTDC}"
+                                      value="checkedValue">
+                                  <label for="__countdown-${actions.startAttendanceTDC}" class="form-label">Hẹn
+                                      giờ</label>
+                              </div>
+                              <input type="range" class="form-range" min="1" max="60" value="5" step="1" disabled
+                                  id="__countdown-${actions.startAttendanceTDC}">
+                              <output class="ps-5">
+                                  5
+                              </output>
+                              <span>phút</span>
                           </div>
-                          <input type="range" class="form-range" min="1" max="60" value="5" step="1" disabled
-                              id="__countdown-${actions.startAttendanceTDC}">
-                          <output class="ps-5">
-                              5
-                          </output>
-                          <span>phút</span>
-                      </div>
-                      <div class="input-group d-none p-2 text-center timer-${actions.startAttendanceTDC}">
-                                Kết thúc sau &ensp; <span class="countdown-${actions.startAttendanceTDC}"></span>
-                            </div>
+                          <div class="input-group d-none p-2 text-center timer-${actions.startAttendanceTDC}">
+                              Kết thúc sau &ensp; <span class="countdown-${actions.startAttendanceTDC}"></span>
+                          </div>
                           <button type="button" class="btn rounded-pill btn-success mx-auto d-block"
                               ${tagBtn}='${actions.startAttendanceTDC}'>Bắt đầu</button>
                           <button type="button" class="btn rounded-pill btn-danger mx-auto d-block d-none"
@@ -119,28 +118,78 @@ function run() {
                   </div>
               </div>
           </div>
-          <li class='fw-bold' data-bs-toggle="modal" data-bs-target="#modelId">
-              <i class="bi bi-clipboard-data"></i> Khảo sát
-          </li>
-          <li class='fw-bold'  ${tagBtn}='${actions.randomPerson}'>
+          <div class="dropdown dropend">
+              <li class='fw-bold item-content' role="button" data-bs-toggle="dropdown" data-bs-auto-close="false"
+                  aria-expanded="false">
+                  <i class="bi bi-clipboard-data"></i> Khảo sát ý kiến
+              </li>
+              <div class="dropdown-menu p-3 overflow-auto menu-survey" aria-labelledby="dropdownMenuLink"
+                  style="max-height: 450px;">
+                  <h6 class="dropdown-header">Khảo sát ý kiến</h6>
+                  <div class="">
+                      <input type="text" class="form-control mb-3 input-link-online input-survey-question" required
+                          placeholder="Câu hỏi khảo sát">
+                      <div class="input-group mb-1 input-group-sm">
+                              <input type="text" class="form-control" placeholder="Từ khoá" readonly>
+                              <input type="text" class="form-control" placeholder="Ý kiến" readonly>
+                      </div>
+                      <div class="inputs-survey-choose">
+                          <div class="input-group mb-1 input-survey-choose">
+                              <input type="text" class="form-control" placeholder="Từ khoá" value="1">
+                              <input type="text" class="form-control" placeholder="Ý kiến" value="Ý kiến 1">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="text-center mt-3">
+                      <button type="button" class="btn btn-sm btn-outline-secondary add-survey-choose"><i
+                          class="bi bi-plus-circle"></i></button>
+                  </div>
+                  <div class=" p-2 control-survey ">
+                      <div class="my-3 w-100">
+                          <div class="form-check ">
+                              <input type="checkbox" class="form-check-input __checkBox-${actions.survey}"
+                                  value="checkedValue">
+                              <label for="__countdown-${actions.survey}" class="form-label">Hẹn
+                                  giờ</label>
+                          </div>
+                          <input type="range" class="form-range" min="1" max="60" value="5" step="1" disabled
+                              id="__countdown-${actions.survey}">
+                          <output class="ps-5">
+                              5
+                          </output>
+                          <span>phút</span>
+                      </div>
+                      <div class="input-group d-none p-2 text-center timer-${actions.survey}">
+                          Kết thúc sau &ensp; <span class="countdown-${actions.survey}"></span>
+                      </div>
+                      <button type="button" class="btn rounded-pill btn-success mx-auto d-block"
+                          ${tagBtn}='${actions.survey}'>Bắt đầu</button>
+                      <button type="button" class="btn rounded-pill btn-danger mx-auto d-block d-none"
+                          ${tagBtn}='${actions.stopSurvey}'>Kết thúc</button>
+                  </div>
+              </div>
+          </div>
+
+
+          <li class='fw-bold item-content' ${tagBtn}='${actions.randomPerson}'>
               <i class="bi bi-disc"></i> Ngẫu nhiên người tham gia
           </li class='fw-bold'>
-          <li class='fw-bold' >
+          <li class='fw-bold item-content'>
               <i class="bi bi-door-open"></i> Tự động xác nhận <span class="form-check float-end form-switch">
                   <input class="form-check-input __toggle-auto-admit" type="checkbox" role="switch"
                       id="toggleAutoAdmit">
               </span>
           </li>
-          <li class='fw-bold' id="btn-mute-list">
+          <li class='fw-bold item-content' id="btn-mute-list">
               <i class="bi bi-mic-mute"></i> Danh sách không bật mic
           </li>
-          <li class='fw-bold' id="btn-unraisehand-list">
-          <i class="bi bi-person-dash"></i> Danh sách không giơ tay
+          <li class='fw-bold item-content' id="btn-unraisehand-list">
+              <i class="bi bi-person-dash"></i> Danh sách không giơ tay
           </li>
       </ul>
   </div>
-</div>
-      `;
+</div>`;
+
   // nhung link bootstrap
   document.head.insertAdjacentHTML(
     "afterbegin",
@@ -429,6 +478,12 @@ function run() {
       case actions.startAttendanceTDC:
         startAttendanceTDC(this);
         break;
+      case actions.survey:
+        Survey(this);
+        break;
+      case actions.stopSurvey:
+        StopSurvey(this);
+        break;
       case actions.stopAttendanceTDC:
         stopAttendanceTDC(this);
         break;
@@ -441,6 +496,7 @@ function run() {
         break;
     }
   }
+
   const countdownTimerAttendanceByKeywordRange = main.querySelector(
     "#__countdownTimerAttendanceByKeyword"
   );
@@ -460,23 +516,24 @@ function run() {
       `[${tagBtn}=${actions.stopAttendanceKeyword}]`
     );
 
-    if (checkCountdownTimerByKW.checked === true) {
-      setTimeout(function () {
-        StopAttendanceKeyword(btnStopAttendanceKeyword);
-      }, countdownTimerAttendanceByKeywordRange.value * 60 * 1000);
-      let countDownTime = countdownTimerAttendanceByKeywordRange.value * 60;
-      let countdown = document.querySelector(`.countdown-${actions.attendanceByKeyword}`);
-      countDownAttendanceByKeyword = setInterval(() => {
-        countdown.textContent = Math.floor(countDownTime / 60) + ':' + countDownTime % 60 + 's ';
-        countDownTime -= 1;
-        if (countDownTime < 0) {
-          clearInterval(countDownAttendanceByKeyword);
-        }
-      }, 1000);
-      timerAttendanceByKeyword.classList.remove('d-none');
-    }
-
     if (inputKeyword.value != "") {
+
+      if (checkCountdownTimerByKW.checked === true) {
+        setTimeout(function () {
+          StopAttendanceKeyword(btnStopAttendanceKeyword);
+        }, countdownTimerAttendanceByKeywordRange.value * 60 * 1000);
+        let countDownTime = countdownTimerAttendanceByKeywordRange.value * 60;
+        let countdown = document.querySelector(`.countdown-${actions.attendanceByKeyword}`);
+        countDownAttendanceByKeyword = setInterval(() => {
+          countdown.textContent = Math.floor(countDownTime / 60) + ':' + countDownTime % 60 + 's ';
+          countDownTime -= 1;
+          if (countDownTime < 0) {
+            clearInterval(countDownAttendanceByKeyword);
+          }
+        }, 1000);
+        timerAttendanceByKeyword.classList.remove('d-none');
+      }
+
       target.disabled = true;
       keyAttendance = inputKeyword.value;
       main
@@ -706,6 +763,192 @@ function run() {
     controlAttendanceTdc.classList.add("d-none");
   }
 
+  //Khao sat 
+  let inputSurveyChoose = main.querySelector('.inputs-survey-choose');
+  const addSurveyChoose = main.querySelector('.add-survey-choose');
+  let orderChoose = 1;
+  addSurveyChoose.addEventListener('click', function () {
+    inputSurveyChoose.innerHTML += ` <div class="input-group mb-1 input-survey-choose">
+    <input type="text" class="form-control" placeholder="Từ khoá" value="${++orderChoose}">
+    <input type="text" class="form-control" placeholder="Ý kiến" value="Ý kiến ${orderChoose}">
+    </div>`
+  });
+  let keyBySurveyChoose = [];
+  let surveyChooses = [];
+  let listSurveyChooses = [];
+  let observerSurvey = new MutationObserver((mutations) => {
+    mutations.forEach(function (mutation) {
+      mutation.addedNodes.forEach((element) => {
+        let nguoiThamGia = element;
+        if (element.classList.contains("oIy2qc")) {
+          nguoiThamGia = element.parentElement.parentElement;
+        }
+        nguoiThamGia
+          .querySelectorAll(".oIy2qc[data-message-text]")
+          .forEach((e) => {
+            let message = e.getAttribute("data-message-text").trim();
+            if (keyBySurveyChoose.includes(message)) {
+              const idMeet = nguoiThamGia
+                .getAttribute("data-sender-id")
+                .substring(
+                  nguoiThamGia
+                    .getAttribute("data-sender-id")
+                    .lastIndexOf("/") + 1
+                );
+
+              let indexKey = keyBySurveyChoose.findIndex(function (e) {
+                  return e == message;
+              });
+
+              const person = {
+                name: nguoiThamGia.getAttribute("data-sender-name"),
+                idMeet: idMeet,
+                selected: surveyChooses[indexKey]
+              };
+            
+
+              let oldperson = listSurveyChooses.find(function (e) {
+                return e.idMeet == person.idMeet;
+              });
+
+              if (oldperson) {
+                listSurveyChooses[
+                  listSurveyChooses.lastIndexOf(oldperson)
+                ].selected = person.selected;
+              } else {
+                listSurveyChooses.push(person);
+              }
+              console.log(listSurveyChooses);
+            }
+          });
+      });
+    });
+  });
+
+  const countdownTimerSurveyRange = main.querySelector(
+    `#__countdown-${actions.survey}`
+  );
+
+  const checkCountdownTimerSurvey = main.querySelector(
+    `.__checkBox-${actions.survey}`
+  );
+  checkCountdownTimerSurvey.addEventListener("change", function () {
+    countdownTimerSurveyRange.disabled = !this.checked;
+  });
+  const timerSurvey = main.querySelector('.timer-' + actions.survey);
+  const inputSurveyQuestion = main.querySelector('.input-survey-question');
+  let countDownSurvey;
+  let timeOutSurvey;
+  let contentSurvey = "";
+  let btnStopSurvey = main.querySelector(
+    `[${tagBtn}=${actions.stopSurvey}]`
+  );
+
+  // bắt đầu Khao sat
+  function Survey(target) {
+    if (inputSurveyQuestion.value != "") {
+
+      if (checkCountdownTimerSurvey.checked === true) {
+
+        let countDownTime = countdownTimerSurveyRange.value * 60;
+
+        timeOutSurvey =  setTimeout(function () {
+          StopSurvey(btnStopSurvey);
+        }, countDownTime * 1000);
+
+        let countdown = document.querySelector(`.countdown-${actions.survey}`);
+        countDownSurvey = setInterval(() => {
+          countdown.textContent = Math.floor(countDownTime / 60) + ':' + countDownTime % 60 + 's ';
+          countDownTime -= 1;
+          if (countDownTime < 0) {
+            clearInterval(countDownSurvey);
+          }
+        }, 1000);
+
+        timerSurvey.classList.remove('d-none');
+
+      }
+
+      target.classList.add('d-none');
+      let question = inputSurveyQuestion.value;
+      addSurveyChoose.disabled = true;
+      main
+        .querySelectorAll(".menu-survey input")
+        .forEach((input) => {
+          input.disabled = true;
+        });
+
+      btnStopSurvey.classList.remove("d-none");
+      contentSurvey = `\nCâu hỏi khảo sát : "${question}" \n\nTừ khoá lựa chọn : Ý kiến khảo sát \n`
+      let inputSurveyChooses = main.querySelectorAll('.input-survey-choose');
+
+      for (let index = 0; index < inputSurveyChooses.length; index++) {
+        const elementKey = inputSurveyChooses[index].children[0].value.trim();
+        const surveyChoose = inputSurveyChooses[index].children[1].value.trim();
+        keyBySurveyChoose.push(elementKey);
+        surveyChooses.push(surveyChoose);
+        contentSurvey += ` ${elementKey} : ${surveyChoose} \n`
+      }
+      textMessage.value = `Bắt đầu khảo sát vào lúc ${new Date().toLocaleString()} ` + contentSurvey;
+
+      btnSendMessage.disabled = false;
+
+      btnSendMessage.click();
+
+      observerSurvey.observe(listChat, {
+        childList: true,
+        subtree: true,
+      });
+    }
+  }
+
+  // kết thúc khao sat
+  function StopSurvey(target) {
+    if (countDownSurvey) {
+      clearInterval(countDownSurvey);
+    }
+    if (timeOutSurvey) {
+      clearTimeout(timeOutSurvey);
+    }
+    // lưu danh sách người
+    const actionBG = idGoogleMeet + "-survey";
+    try {
+      chrome.storage.sync.set({ [actionBG]:{
+        list:listSurveyChooses,
+        labels:surveyChooses
+      } });
+    } catch (error) {
+      console.log(error);
+    }
+
+    // gửi yêu cầu
+    sendMessageBGJS("survey", { idGoogleMeet: idGoogleMeet });
+
+    const btnSurvey = main.querySelector(
+      `[${tagBtn}=${actions.survey}]`
+    );
+    addSurveyChoose.disabled = false;
+    btnSurvey.classList.remove('d-none');
+    timerSurvey.classList.add('d-none');
+    target.classList.add('d-none');
+    let question = inputSurveyQuestion.value;
+    main
+      .querySelectorAll(".menu-survey input")
+      .forEach((input) => {
+        input.disabled = false;
+      });
+    orderChoose = 0;
+    inputSurveyChoose.innerHTML = ` <div class="input-group mb-1 input-survey-choose">
+      <input type="text" class="form-control" placeholder="Từ khoá" value="${++orderChoose}">
+      <input type="text" class="form-control" placeholder="Ý kiến" value="Ý kiến ${orderChoose}">
+      </div>`
+    keyBySurveyChoose = [];
+    surveyChooses = [];
+    listSurveyChooses = [];
+    inputSurveyQuestion.value = '';
+  }
+
+  //#region 
   // gui yeu cau lay danh sach sinh vien
   async function sendMessageBGJSGetStudentList(type, data) {
     let result = await chrome.runtime.sendMessage(
@@ -773,3 +1016,4 @@ window.addEventListener("beforeunload", (event) => {
     chrome.storage.sync.clear();
   } catch (error) { }
 });
+//#endregion

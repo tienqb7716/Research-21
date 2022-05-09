@@ -9,7 +9,10 @@
     let audio2 = new Audio('votay.mp3');
     const urlParams = new URLSearchParams(window.location.search);
     const idGoogleMeet = urlParams.get('idGoogleMeet');
-    chrome.storage.sync.get([idGoogleMeet], update);
+    try {
+        chrome.storage.sync.get([idGoogleMeet], update);
+    } catch (error) {
+    }
 
     function update(result) {
         const people = result[idGoogleMeet];
@@ -24,8 +27,8 @@
         });
         Reset();
     }
-    const btnReset =  document.querySelector('#refesh');
-    btnReset.addEventListener('click',function () {
+    const btnReset = document.querySelector('#refesh');
+    btnReset.addEventListener('click', function () {
         txtArea.value = '';
         chrome.storage.sync.get([idGoogleMeet], update);
 

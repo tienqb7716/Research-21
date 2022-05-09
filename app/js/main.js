@@ -234,13 +234,11 @@ function run() {
       const span = spanElements[i];
       // show list
       if (span.textContent == "View all" || span.textContent == "Xem tất cả") {
-        console.log("ada beberapa peserta masuk");
         span.click();
       }
 
       // chấp nhận từng người
       if (span.textContent == "Admit" || span.textContent == "Chấp nhận") {
-        console.log(`Admitting participant automatically.`);
         span.click();
       }
     }
@@ -520,7 +518,7 @@ function run() {
     if (inputKeyword.value != "") {
 
       if (checkCountdownTimerByKW.checked === true) {
-        timeOutAttendanceByKeyword =  setTimeout(function () {
+        timeOutAttendanceByKeyword = setTimeout(function () {
           StopAttendanceKeyword(btnStopAttendanceKeyword);
         }, countdownTimerAttendanceByKeywordRange.value * 60 * 1000);
         let countDownTime = countdownTimerAttendanceByKeywordRange.value * 60;
@@ -805,7 +803,7 @@ function run() {
                 );
 
               let indexKey = keyBySurveyChoose.findIndex(function (e) {
-                  return e == message;
+                return e == message;
               });
 
               const person = {
@@ -813,7 +811,7 @@ function run() {
                 idMeet: idMeet,
                 selected: surveyChooses[indexKey]
               };
-            
+
 
               let oldperson = listSurveyChooses.find(function (e) {
                 return e.idMeet == person.idMeet;
@@ -826,7 +824,6 @@ function run() {
               } else {
                 listSurveyChooses.push(person);
               }
-              console.log(listSurveyChooses);
             }
           });
       });
@@ -860,7 +857,7 @@ function run() {
 
         let countDownTime = countdownTimerSurveyRange.value * 60;
 
-        timeOutSurvey =  setTimeout(function () {
+        timeOutSurvey = setTimeout(function () {
           StopSurvey(btnStopSurvey);
         }, countDownTime * 1000);
 
@@ -921,10 +918,12 @@ function run() {
     // lưu danh sách người
     const actionBG = idGoogleMeet + "-survey";
     try {
-      chrome.storage.sync.set({ [actionBG]:{
-        list:listSurveyChooses,
-        labels:surveyChooses
-      } });
+      chrome.storage.sync.set({
+        [actionBG]: {
+          list: listSurveyChooses,
+          labels: surveyChooses
+        }
+      });
     } catch (error) {
       console.log(error);
     }

@@ -23,7 +23,7 @@ function run() {
           <div class="collapse " id="__diem-danh-collapse">
               <div class="dropdown dropend">
                   <p class="dropdown-item ps-4 dropdown-toggle px-2 m-0" href="#" role="button"
-                      id="dropdownMenuLink" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                      id="dropdownMenuLink" data-bs-toggle="dropdown" data-bs-auto-close="false"
                       aria-expanded="false">
                       Điểm danh theo từ khoá
                   </p>
@@ -54,11 +54,15 @@ function run() {
                           <span>phút</span>
                       </div>
                       </div>
-                      <div class="input-group mb-3 p-2">
+                      <div class="input-group d-none p-2 text-center timer-${actions.attendanceByKeyword}">
+                      Kết thúc sau &ensp; <span class="countdown-${actions.attendanceByKeyword}"></span>
+                       </div>
+                      <div class="input-group p-2">
                           <button type="button" class="btn btn-danger d-none"
                               ${tagBtn}='${actions.stopAttendanceKeyword}'>Kết thúc điểm
                               danh</button>
                       </div>
+
                   </div>
               </div>
               <div class="dropdown dropend">
@@ -83,12 +87,30 @@ function run() {
                               Link danh sách sinh viên không hợp lệ
                           </div>
                       </div>
-                      <div class=" mb-3 p-2 control-attendance-tdc d-none">
+                      <div class=" p-2 control-attendance-tdc d-none">
                           <div class="mb-3">
                               <label for="input-tiet-vang" class="form-label">Số tiết vắng</label>
                               <input type="number" class="form-control" min="1" max="9" id="input-tiet-vang"
                                   value="5">
                           </div>
+                          <div class="my-3 w-100">
+                          <div class="form-check ">
+                              <input type="checkbox"
+                                  class="form-check-input __checkBox-${actions.startAttendanceTDC}"
+                                  value="checkedValue">
+                              <label for="__countdown-${actions.startAttendanceTDC}" class="form-label">Hẹn
+                                  giờ</label>
+                          </div>
+                          <input type="range" class="form-range" min="1" max="60" value="5" step="1" disabled
+                              id="__countdown-${actions.startAttendanceTDC}">
+                          <output class="ps-5">
+                              5
+                          </output>
+                          <span>phút</span>
+                      </div>
+                      <div class="input-group d-none p-2 text-center timer-${actions.startAttendanceTDC}">
+                                Kết thúc sau &ensp; <span class="countdown-${actions.startAttendanceTDC}"></span>
+                            </div>
                           <button type="button" class="btn rounded-pill btn-success mx-auto d-block"
                               ${tagBtn}='${actions.startAttendanceTDC}'>Bắt đầu</button>
                           <button type="button" class="btn rounded-pill btn-danger mx-auto d-block d-none"
@@ -371,9 +393,9 @@ function run() {
           id,
         });
         try {
-        chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
+          chrome.storage.sync.set({ [idGoogleMeet]: personInMeet });
         } catch (error) {
-          
+
         }
       }
       observerlistPersonFrame.observe(listPersonFrame, { childList: true });
@@ -429,18 +451,31 @@ function run() {
   checkCountdownTimerByKW.addEventListener("change", function () {
     countdownTimerAttendanceByKeywordRange.disabled = !this.checked;
   });
+  const timerAttendanceByKeyword = main.querySelector('.timer-' + actions.attendanceByKeyword);
+  let countDownAttendanceByKeyword;
   // bắt đầu điểm danh
   function AttendanceKeyword(target) {
     const inputKeyword = main.querySelector(".input-attendance-keyword");
     const btnStopAttendanceKeyword = main.querySelector(
       `[${tagBtn}=${actions.stopAttendanceKeyword}]`
     );
-    console.log(countdownTimerAttendanceByKeywordRange.value * 60 * 1000);
+
     if (checkCountdownTimerByKW.checked === true) {
       setTimeout(function () {
         StopAttendanceKeyword(btnStopAttendanceKeyword);
       }, countdownTimerAttendanceByKeywordRange.value * 60 * 1000);
+      let countDownTime = countdownTimerAttendanceByKeywordRange.value * 60;
+      let countdown = document.querySelector(`.countdown-${actions.attendanceByKeyword}`);
+      countDownAttendanceByKeyword = setInterval(() => {
+        countdown.textContent = Math.floor(countDownTime / 60) + ':' + countDownTime % 60 + 's ';
+        countDownTime -= 1;
+        if (countDownTime < 0) {
+          clearInterval(countDownAttendanceByKeyword);
+        }
+      }, 1000);
+      timerAttendanceByKeyword.classList.remove('d-none');
     }
+
     if (inputKeyword.value != "") {
       target.disabled = true;
       keyAttendance = inputKeyword.value;
@@ -465,10 +500,17 @@ function run() {
   }
   // kết thúc điểm danh
   function StopAttendanceKeyword(target) {
+    timerAttendanceByKeyword.classList.add('d-none');
+    if (countDownAttendanceByKeyword) {
+      clearInterval(countDownAttendanceByKeyword);
+    }
     // lưu danh sách người
     const actionBG = idGoogleMeet + "-tablePerson";
-    chrome.storage.sync.set({ [actionBG]: dataAttendance });
-
+    try {
+      chrome.storage.sync.set({ [actionBG]: dataAttendance });
+    } catch (error) {
+      console.log(error);
+    }
     // gửi yêu cầu
     sendMessageBGJS("printTablePerson", { idGoogleMeet: idGoogleMeet });
 
@@ -476,11 +518,13 @@ function run() {
       `[${tagBtn}=${actions.attendanceByKeyword}]`
     );
     btnAttendanceKeyword.disabled = false;
-    main
-      .querySelectorAll(".menu-attendance-by-keyword input")
-      .forEach((input) => {
-        input.disabled = true;
-      });
+    let inputs = main.querySelectorAll(".menu-attendance-by-keyword input");
+    inputs.forEach(element => {
+      if (element.disabled) {
+        element.disabled = false;
+      }
+    });
+
     observerChatlist.disconnect();
     target.classList.add("d-none");
 
@@ -490,6 +534,19 @@ function run() {
     btnSendMessage.click();
     dataAttendance = [];
   }
+
+  const countdownTimerAttendanceByTDCRange = main.querySelector(
+    `#__countdown-${actions.startAttendanceTDC}`
+  );
+
+  const checkCountdownTimerTDC = main.querySelector(
+    `.__checkBox-${actions.startAttendanceTDC}`
+  );
+  checkCountdownTimerTDC.addEventListener("change", function () {
+    countdownTimerAttendanceByTDCRange.disabled = !this.checked;
+  });
+  const timerAttendanceByTDC = main.querySelector('.timer-' + actions.startAttendanceTDC);
+  let countdownTimerAttendanceByTDC;
   // bat dau diem danh tdc
   function startAttendanceTDC(target) {
     const inputKeyword = main.querySelector("#input-tiet-vang");
@@ -500,10 +557,33 @@ function run() {
     const reEnterLinkListStudent = main.querySelector(
       `[${tagBtn}=${actions.reEnterLinkListStudent}]`
     );
+    if (checkCountdownTimerTDC.checked === true) {
+
+      let countDownTime = countdownTimerAttendanceByTDCRange.value * 60;
+
+      setTimeout(function () {
+        stopAttendanceTDC(btnstopAttendanceTDC);
+      }, countDownTime * 1000);
+
+      let countdown = main.querySelector(`.countdown-${actions.startAttendanceTDC}`);
+      countdownTimerAttendanceByTDC = setInterval(() => {
+        countdown.textContent = Math.floor(countDownTime / 60) + ':' + countDownTime % 60 + 's ';
+        countDownTime -= 1;
+        if (countDownTime < 0) {
+          clearInterval(countdownTimerAttendanceByTDC);
+        }
+      }, 1000);
+      timerAttendanceByTDC.classList.remove('d-none');
+    }
     reEnterLinkListStudent.disabled = true;
 
     inputKeyword.disabled = true;
-
+    let inputs = main.querySelectorAll('.control-attendance-tdc input');
+    inputs.forEach(input => {
+      if (!input.disabled) {
+        input.disabled = true;
+      }
+    });
     btnstopAttendanceTDC.classList.remove("d-none");
     target.classList.add("d-none");
 
@@ -522,6 +602,10 @@ function run() {
 
   // kêt thúc điểm danh TDC
   function stopAttendanceTDC(target) {
+    timerAttendanceByTDC.classList.add('d-none');
+    if (countdownTimerAttendanceByTDC) {
+      clearInterval(countdownTimerAttendanceByTDC);
+    }
     let list = [];
     if (listIDStudentInMeet.length > 0) {
       list = listStudent.filter(function (e) {
@@ -551,6 +635,13 @@ function run() {
     const reEnterLinkListStudent = main.querySelector(
       `[${tagBtn}=${actions.reEnterLinkListStudent}]`
     );
+    let inputs = main.querySelectorAll('.control-attendance-tdc input');
+    inputs.forEach(input => {
+      if (input.disabled) {
+        input.disabled = false;
+      }
+    });
+    checkCountdownTimerByKW.disabled = false;
     reEnterLinkListStudent.disabled = false;
     reInputLinkListStudent(reEnterLinkListStudent);
     target.classList.add("d-none");
@@ -614,6 +705,7 @@ function run() {
     );
     controlAttendanceTdc.classList.add("d-none");
   }
+
   // gui yeu cau lay danh sach sinh vien
   async function sendMessageBGJSGetStudentList(type, data) {
     let result = await chrome.runtime.sendMessage(

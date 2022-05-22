@@ -285,7 +285,7 @@ function run() {
                     id: id,
                     datetime: new Date().toLocaleString()
                   };
-                  if (!dataAttendance.includes(person)) {
+                  if (!dataAttendance.some((e) => e.id === id)) {
                     dataAttendance.push(person);
                   }
                 }

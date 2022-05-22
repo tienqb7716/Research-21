@@ -283,6 +283,7 @@ function run() {
                   const person = {
                     name: nguoiThamGia.getAttribute("data-sender-name"),
                     id: id,
+                    datetime: new Date().toLocaleString()
                   };
                   if (!dataAttendance.includes(person)) {
                     dataAttendance.push(person);

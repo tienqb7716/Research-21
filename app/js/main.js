@@ -683,7 +683,7 @@ function run() {
     list = listStudent;
     listIDStudentInMeet.forEach(el => {
       list = list.filter(function (student) {
-        return student.id != el.id;
+        return student.id.toLowerCase() != el.id.toLowerCase();
       })
     });
 

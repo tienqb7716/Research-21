@@ -788,6 +788,7 @@ function run() {
   removeSurveyChooser.addEventListener('click', function () {
     if (inputSurveyChoose.childElementCount>1) {
       inputSurveyChoose.removeChild(inputSurveyChoose.lastElementChild);
+      orderChoose--;
     }
    
   });

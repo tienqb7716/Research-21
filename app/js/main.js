@@ -141,8 +141,10 @@ function run() {
                       </div>
                   </div>
                   <div class="text-center mt-3">
+                  <button type="button" class="btn btn-sm btn-outline-secondary remove-survey-choose"><i class="bi bi-slash-circle"></i></button>
                       <button type="button" class="btn btn-sm btn-outline-secondary add-survey-choose"><i
                           class="bi bi-plus-circle"></i></button>
+                          
                   </div>
                   <div class=" p-2 control-survey ">
                       <div class="my-3 w-100">
@@ -326,43 +328,50 @@ function run() {
   let observerChatlistTDC = new MutationObserver((mutations) => {
     mutations.forEach(function (mutation) {
       mutation.addedNodes.forEach((element) => {
-        if (element.getAttribute("data-sender-id") != "_self_") {
-          let nguoiThamGia = element;
-          if (element.classList.contains("oIy2qc")) {
-            nguoiThamGia = element.parentElement.parentElement;
-          }
-          nguoiThamGia
-            .querySelectorAll(".oIy2qc[data-message-text]")
-            .forEach((e) => {
-              let rgStudent = /^\d{5}[A-Za-z]{2}\d{4}$/;
-              let idStudent = e.getAttribute("data-message-text").trim();
-              if (rgStudent.test(idStudent)) {
-                const idMeet = nguoiThamGia
-                  .getAttribute("data-sender-id")
-                  .substring(
-                    nguoiThamGia
-                      .getAttribute("data-sender-id")
-                      .lastIndexOf("/") + 1
-                  );
-                const person = {
-                  name: nguoiThamGia.getAttribute("data-sender-name"),
-                  idMeet: idMeet,
-                  id: idStudent,
-                };
-                let oldperson = listIDStudentInMeet.find(function (e) {
-                  return e.idMeet == person.idMeet;
-                });
-
-                if (oldperson) {
-                  listIDStudentInMeet[
-                    listIDStudentInMeet.lastIndexOf(oldperson)
-                  ].id = person.id;
-                } else {
-                  listIDStudentInMeet.push(person);
+        // if (element.getAttribute("data-sender-id") != "_self_") {
+        let nguoiThamGia = element;
+        if (element.classList.contains("oIy2qc")) {
+          nguoiThamGia = element.parentElement.parentElement;
+        }
+        nguoiThamGia
+          .querySelectorAll(".oIy2qc[data-message-text]")
+          .forEach((e) => {
+            let rgStudent = /^\d{5}[A-Za-z]{2}\d{4}$/;
+            let idStudent = e.getAttribute("data-message-text").trim();
+            if (rgStudent.test(idStudent)) {
+              const idMeet = nguoiThamGia
+                .getAttribute("data-sender-id")
+                .substring(
+                  nguoiThamGia
+                    .getAttribute("data-sender-id")
+                    .lastIndexOf("/") + 1
+                );
+              const person = {
+                name: nguoiThamGia.getAttribute("data-sender-name"),
+                idMeet: idMeet,
+                id: idStudent,
+              };
+              // let oldperson = listIDStudentInMeet.find(function (e) {
+              //   return e.idMeet == person.idMeet;
+              // });
+              let index = -1;
+              for (let i = 0; i < listIDStudentInMeet.length; i++) {
+                const element = listIDStudentInMeet[i];
+                if (element.idMeet == person.idMeet) {
+                  index = i;
                 }
               }
-            });
-        }
+              if (index != -1) {
+                listIDStudentInMeet[
+                  index
+                ].id = person.id;
+              } else {
+                listIDStudentInMeet.push(person);
+              }
+              console.log(person.id);
+            }
+          });
+        // }
       });
     });
   });
@@ -671,23 +680,18 @@ function run() {
       clearTimeout(timeOutAttendanceByTDC);
     }
     let list = [];
-    if (listIDStudentInMeet.length > 0) {
-      list = listStudent.filter(function (e) {
-        return listIDStudentInMeet.some(
-          (student) => student.id.toLowerCase() != e.id.toLowerCase()
-        );
-      });
-    } else {
-      list = listStudent;
-    }
+    list = listStudent;
+    listIDStudentInMeet.forEach(el => {
+      list = list.filter(function (student) {
+        return student.id != el.id;
+      })
+    });
 
     const soTiet = main.querySelector("#input-tiet-vang").value;
     const TDCOLINE = {
       url: url,
-      list,
-      list,
-      soTiet,
-      soTiet,
+      list: list,
+      soTiet: soTiet,
     };
     // lưu danh sách người
     chrome.storage.sync.set({ TDCOLINE: TDCOLINE });
@@ -779,6 +783,13 @@ function run() {
     <input type="text" class="form-control" placeholder="Từ khoá" value="${++orderChoose}">
     <input type="text" class="form-control" placeholder="Ý kiến" value="Ý kiến ${orderChoose}">
     </div>`
+  });
+  const removeSurveyChooser = main.querySelector('.remove-survey-choose');
+  removeSurveyChooser.addEventListener('click', function () {
+    if (inputSurveyChoose.childElementCount>1) {
+      inputSurveyChoose.removeChild(inputSurveyChoose.lastElementChild);
+    }
+   
   });
   let keyBySurveyChoose = [];
   let surveyChooses = [];
